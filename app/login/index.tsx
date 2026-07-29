@@ -33,7 +33,8 @@ export default function Login() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button}
+          onPress={() => router.push("/login/email")}>
           <Ionicons
         name="mail-outline"
         size={22}
