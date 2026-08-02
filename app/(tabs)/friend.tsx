@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function CalendarScreen() {
+export default function FriendScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        캘린더 화면입니다.
+        친구 화면입니다.
       </Text>
     </View>
   );

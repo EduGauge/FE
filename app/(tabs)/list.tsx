@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function CalendarScreen() {
+export default function ListScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        캘린더 화면입니다.
+        리스트 화면입니다.
       </Text>
     </View>
   );
