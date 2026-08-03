@@ -13,6 +13,10 @@ export default function EmailLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isValid =
+  email.trim() !== "" &&
+  password.trim() !== "";
+
   const handleLogin = () => {
     console.log("이메일:", email);
     console.log("비밀번호:", password);
@@ -71,10 +75,16 @@ export default function EmailLogin() {
 
       
       <Pressable
-        style={styles.loginButton}
-        onPress={handleLogin}
-      >
-        <Text style={styles.loginButtonText}>
+      style={[
+        styles.loginButton,
+        !isValid && styles.disabledButton,
+   ]}
+     disabled={!isValid}
+    onPress={handleLogin}
+>
+        <Text style={[styles.loginButtonText,
+        !isValid && styles.disabledButtonText,
+        ]}>
           완료
         </Text>
       </Pressable>
@@ -157,4 +167,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  disabledButton: {
+    backgroundColor: "#D9D9D9",
+},
+
+  disabledButtonText: {
+    color: "#A5A5A5",
+},
 });

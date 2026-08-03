@@ -57,7 +57,7 @@ export default function SignupEmail() {
         <TextInput
           style={styles.input}
           placeholder="이메일"
-          placeholderTextColor="#BDBDBD"
+          placeholderTextColor="#CFCFCF"
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
@@ -143,10 +143,11 @@ const styles = StyleSheet.create({
 
   input: {
     height: 55,
-    borderRadius: 28,
-    backgroundColor: "#FFFFFF",
+    borderRadius: 30,
+    backgroundColor: "#7C8792",
     paddingHorizontal: 20,
-    fontSize: 16,
+    color: "#FFFFFF",
+    marginBottom: 20, 
   },
 
   errorContainer: {
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 125,
+    bottom: 120,
     left: 25,
     right: 25,
   },
