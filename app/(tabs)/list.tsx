@@ -1,4 +1,4 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   Pressable,
@@ -11,43 +11,6 @@ export default function ListScreen() {
   return (
     <View style={styles.container}>
 
-      {/* Header */}
-      <View style={styles.header}>
-
-        {/* Logo (임시) */}
-        <Text style={styles.logo}>
-          LOGO
-        </Text>
-
-        <View style={styles.headerRight}>
-
-          <Pressable onPress={() => router.push("/profile")}>
-            <Ionicons
-              name="person-circle-outline"
-              size={28}
-              color="#FFFFFF"
-            />
-          </Pressable>
-
-          <Pressable
-            style={{ marginLeft: 12 }}
-            onPress={() => router.push("/notification")}
-          >
-            <Ionicons
-              name="ellipsis-vertical"
-              size={24}
-              color="#FFFFFF"
-            />
-          </Pressable>
-
-        </View>
-
-      </View>
-
-      
-      <View style={styles.divider} />
-
-      
       <Text style={styles.totalLabel}>
         총 시간
       </Text>
@@ -56,14 +19,11 @@ export default function ListScreen() {
         00:00
       </Text>
 
-      
       <View style={styles.progressBackground}>
         <View style={styles.progressBar} />
       </View>
 
-      
       <View style={styles.addContainer}>
-
         <Text style={styles.addTitle}>
           리스트
         </Text>
@@ -71,6 +31,7 @@ export default function ListScreen() {
         <Pressable
           style={styles.addIcon}
           onPress={() => router.push("/list/create")}
+          hitSlop={10}
         >
           <MaterialIcons
             name="add"
@@ -78,59 +39,28 @@ export default function ListScreen() {
             color="#FFFFFF"
           />
         </Pressable>
-
       </View>
 
       <Text style={styles.addSubText}>
         리스트에 할 일을 추가해보세요!
       </Text>
 
-      
       <View style={styles.emptyContainer}>
-
         {/* 임시 캐릭터 */}
         <View style={styles.character} />
 
         <Text style={styles.emptyText}>
           작성된 리스트가 없습니다.
         </Text>
-
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: "#10243A",
-  },
-
-  header: {
-    marginTop: 55,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  logo: {
-    color: "#F6D64A",
-    fontSize: 24,
-    fontWeight: "700",
-  },
-
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  divider: {
-    marginTop: 15,
-    height: 1,
-    backgroundColor: "#415366",
   },
 
   totalLabel: {
@@ -149,9 +79,10 @@ const styles = StyleSheet.create({
   },
 
   progressBackground: {
+    height: 18,
     marginTop: 25,
     marginHorizontal: 25,
-    height: 18,
+    overflow: "hidden",
     borderRadius: 10,
     backgroundColor: "#55613A",
   },
@@ -204,5 +135,4 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
   },
-
 });
