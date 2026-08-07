@@ -1,7 +1,7 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams, } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Platform, Pressable, ScrollView, StyleSheet, Text,
   TextInput,
@@ -11,29 +11,42 @@ import { useCategories } from "../context/CategoryContext";
 import { useTodos } from "../context/TodoContext";
 
 import CancelModal from "../components/CancelModal";
+import CategoryAddModal from "../components/CategoryAddModal";
 import CategorySelectModal from "../components/CategorySelectModal";
+import DeleteModal from "../components/DeleteModal";
 import RepeatModal from "../components/RepeatModal";
 
-export default function CreateList() {
-
-  const { category, mode } =  useLocalSearchParams<{
-    category?: string;
-    mode?: string;
+export default function AlterList() {
+  const {
+     id,
+    title,
+    category,
+    repeat: repeatParam,
+    repeatEnd: repeatEndParam,
+  } = useLocalSearchParams<{
+    id: string;
+    title: string;
+    category: string;
+    repeat: string;
+    repeatEnd: string;
   }>();
 
-  const [listName, setListName] = useState("");
+  const { todos, updateTodo, deleteTodo} = useTodos();
 
-  const { addTodo } = useTodos();
+  const {
+    categories,
+    addCategory, 
+    deleteCategory: removeCategory,} = useCategories();
 
-  const { categories,  addCategory,  deleteCategory} = useCategories();
+  const [listName, setListName] = useState(title ?? "");
 
   const [selectedCategory, setSelectedCategory] =
-    useState(category ?.toString() ?? "");
+    useState(category ?? "");
 
-  const [repeat, setRepeat] = useState("없음");
+  const [repeat, setRepeat] = useState(repeatParam ?? "없음");
 
   const [repeatEnd, setRepeatEnd] =
-    useState("없음");
+    useState(repeatEndParam ?? "없음");
 
   const [date, setDate] =
     useState(new Date());
@@ -44,56 +57,49 @@ export default function CreateList() {
   const [showCategoryModal, setShowCategoryModal] =
     useState(false);
 
+  const [showCategoryAddModal, setShowCategoryAddModal] =
+    useState(false);
+
   const [showRepeatModal, setShowRepeatModal] =
     useState(false);
 
   const [showCancelModal, setShowCancelModal] =
     useState(false);
 
+  const [showDeleteModal, setShowDeleteModal] = 
+    useState(false);
+
   const [isListNameFocused, setIsListNameFocused] =
     useState(false);
-
-  const [isCategoryFocused, setIsCategoryFocused] =
-    useState(false);
-
-  useEffect(() => {
-    if (category) {
-      setSelectedCategory(
-        category.toString()
-      );
-    }
-  }, [category]);
 
   const isValid =
     listName.trim() !== "" &&
     selectedCategory !== "";
 
-  const handleCreate = () => {
-    
-   if (mode === "newCategory" &&
-  !categories.includes(selectedCategory)
-   ) {
-    addCategory(selectedCategory);
-   }
+  const handleUpdate = () => {
+    const currentTodo = todos.find(
+      (item) => item.id === id
+    );
+    if (!currentTodo) return;
 
-  addTodo({
-    id: Date.now().toString(),
-    title: listName,
-    category: selectedCategory,
-    repeat,
-    repeatEnd,
-    checked: false,
-  });
-    router.replace("/list");
-    setListName("");
-    setSelectedCategory("");
-    setRepeat("없음");
-    setRepeatEnd("없음");
-};
+    updateTodo({
+      ...currentTodo,
+      title: listName,
+      category: selectedCategory,
+      repeat,
+      repeatEnd,
+    });
+    router.replace("/list/manage");
+  };
 
+  const handleAddCategory = (category: string) => {
+    addCategory(category);
+    setSelectedCategory(category);
+    setShowCategoryAddModal(false);
+  };
 
   const handleDeleteCategory = (category: string) => {
-    deleteCategory(category);
+    removeCategory(category);
 
     if (selectedCategory === category) {
       setSelectedCategory("");
@@ -119,9 +125,7 @@ export default function CreateList() {
         </Pressable>
 
         <Text style={styles.headerTitle}>
-          {mode === "newCategory"
-          ? "새 카테고리 만들기"
-          : "리스트 생성"}
+          리스트 수정
         </Text>
 
       </View>
@@ -163,64 +167,35 @@ export default function CreateList() {
 
 
         
-    {mode === "newCategory" ? (
+        <Pressable
+          style={[styles.inputContainer]}
+          onPress={() =>
+            setShowCategoryModal(true)
+          }
+        >
 
-      <View style={styles.inputContainer}>
+        
+          <Text style={styles.inputLabel}>
+              카테고리
+          </Text>
 
-        <Text style={styles.inputLabel}>
-          카테고리
+          <Text
+            style={[
+              styles.selectText,
+              selectedCategory === "" &&
+                styles.placeholder,
+             ]}
+        >
+            {selectedCategory || "선택"}
         </Text>
 
-    <TextInput
-      style={[
-        styles.input,
-        !isCategoryFocused &&
-          selectedCategory !== "" &&
-          styles.inputRight,
-        ]}
-      value={selectedCategory}
-      onChangeText={setSelectedCategory}
-      placeholder=""
-      placeholderTextColor="#CFCFCF"
-      onFocus={()=>setIsCategoryFocused(true)}
-      onBlur={()=>setIsCategoryFocused(false)}
-      maxLength={15}
-    />
-
-  </View>
-
-) : (
-
-  <Pressable
-    style={styles.inputContainer}
-    onPress={() =>
-      setShowCategoryModal(true)
-    }
-  >
-
-    <Text style={styles.inputLabel}>
-      카테고리
-    </Text>
-
-    <Text
-      style={[
-        styles.selectText,
-        selectedCategory === "" &&
-          styles.placeholder,
-      ]}
-    >
-      {selectedCategory || "선택"}
-    </Text>
-
-    <MaterialIcons
-      name="keyboard-arrow-down"
-      size={24}
-      color="#FFFFFF"
-    />
-
-  </Pressable>
-
-)}
+          <MaterialIcons
+            name="keyboard-arrow-down"
+            size={24}
+            color="#FFFFFF"
+          />
+        
+        </Pressable>
     
 
         <Pressable
@@ -305,7 +280,7 @@ export default function CreateList() {
           !isValid && styles.disabledButton,
         ]}
         disabled={!isValid}
-        onPress={handleCreate}
+        onPress={handleUpdate}
       >
         <Text
           style={[
@@ -313,11 +288,21 @@ export default function CreateList() {
             !isValid && styles.disabledButtonText,
           ]}
         >
-          등록하기
+          수정하기
         </Text>
       </Pressable>
 
-    
+      <Pressable
+        style={styles.deleteButton}
+        onPress={() =>
+         setShowDeleteModal(true)
+    }
+  >
+        <Text style={styles.deleteButtonText}>
+          삭제하기
+         </Text>
+      </Pressable>
+
       <CategorySelectModal
         visible={showCategoryModal}
         categories={categories}
@@ -330,11 +315,17 @@ export default function CreateList() {
         onDelete={handleDeleteCategory}
         onAdd={() => {
           setShowCategoryModal(false);
-          router.push("/list/manage");
+          setShowCategoryAddModal(true);
         }}
       />
 
-    
+      <CategoryAddModal
+        visible={showCategoryAddModal}
+        categories={categories}
+        onClose={() => setShowCategoryAddModal(false)}
+        onAdd={handleAddCategory}
+      />
+
       <RepeatModal
         visible={showRepeatModal}
         selected={repeat}
@@ -348,12 +339,24 @@ export default function CreateList() {
         }}
       />
 
+      <DeleteModal
+        visible={showDeleteModal}
+        onClose={() =>
+          setShowDeleteModal(false)
+        }
+       onDelete={() => {
+         deleteTodo(id as string);
+         setShowDeleteModal(false);
+         router.replace("/list/manage");
+      }}
+    />
+
       <CancelModal
         visible={showCancelModal}
         onContinue={() => setShowCancelModal(false)}
         onCancel={() => {
           setShowCancelModal(false);
-          router.replace("/list");
+          router.back();
         }}
       />
 
@@ -449,8 +452,7 @@ const styles = StyleSheet.create({
   disabledButtonText: {
     color: "#A5A5A5",
   },
-
-
+ 
   divider: {
     height: 1,
     backgroundColor: "#415366",
@@ -521,4 +523,23 @@ sectionSpacing: {
 listNameSection: {
   marginBottom: 18,
 },
+
+deleteButton: {
+  position: "absolute",
+  left: 24,
+  right: 24,
+  bottom: 22,
+  height: 55,
+  borderRadius: 28,
+  backgroundColor: "#7C8792",
+  justifyContent: "center",
+  alignItems: "center",
+},
+
+deleteButtonText: {
+  color: "#FFFFFF",
+  fontSize: 17,
+  fontWeight: "700",
+},
+
 });
