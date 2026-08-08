@@ -31,7 +31,7 @@ const initialNotifications: NotificationItem[] = [
   },
   {
     id: 3,
-    message: "일어나세요~ 친구 ‘훈거’님이 깨웠어요.",
+    message: "일어나세요~ 친구 ‘혼긱’님이 깨웠어요.",
     canAccept: false,
   },
 ];
@@ -132,30 +132,30 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     paddingHorizontal: 28,
-    paddingTop: 36,
+    paddingTop: 38,
     paddingBottom: 32,
   },
   title: {
     marginBottom: 32,
-    color: "#262626",
-    fontSize: 15,
-    fontWeight: "700",
+    color: "#000",
+    fontSize: 13,
+    fontWeight: "500",
     textAlign: "center",
   },
   notificationList: {
     width: "100%",
   },
   notificationRow: {
-    minHeight: 58,
+    minHeight: 57,
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: "#D9D9D9",
   },
   message: {
     flex: 1,
     paddingRight: 10,
-    color: "#303236",
+    color: "#303030",
     fontSize: 13,
     fontWeight: "500",
   },
@@ -165,14 +165,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   acceptButton: {
-    paddingHorizontal: 13,
+    paddingHorizontal: 15,
     paddingVertical: 6,
     borderRadius: 999,
-    backgroundColor: "#06283D",
+    backgroundColor: "#071F30",
   },
   acceptText: {
     color: "#FFFFFF",
-    fontSize: 12,
-    fontWeight: "600",
+    fontSize: 13,
+    fontWeight: "400",
   },
 });

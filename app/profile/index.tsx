@@ -63,14 +63,14 @@ export default function ProfileScreen({
               style={styles.profileImageWrapper}
             >
               <Image
-                source={require("../../assets/characters/character1.png")}
+                source={require("../../assets/characters/profileCharacter.png")}
                 style={styles.profileImage}
                 resizeMode="contain"
               />
             </View>
 
             <Text style={styles.nickname}>
-              홍의와우#22
+              홍익와우#22
             </Text>
           </View>
 
@@ -83,7 +83,7 @@ export default function ProfileScreen({
 
             <InfoRow
               label="비밀번호"
-              value="ntWOW_WOWWW"
+              value="IwantGoHome"
             />
           </View>
 
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    paddingTop: 18,
+    paddingTop: 38,
     paddingBottom: 32,
   },
 
@@ -321,13 +321,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 7,
   },
 
   doneText: {
-    color: "#111111",
-    fontSize: 14,
-    fontWeight: "600",
+    color: "#000",
+    fontSize: 13,
+    fontWeight: "500",
   },
 
   profileSection: {
@@ -337,60 +337,62 @@ const styles = StyleSheet.create({
   },
 
   profileImageWrapper: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: "#F2D63D",
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#E3C943",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
   },
 
   profileImage: {
-    width: 58,
-    height: 58,
+    width: 68,
+    height: 73,
   },
 
   nickname: {
-    marginTop: 14,
+    marginTop: 23,
     color: "#333333",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "700",
   },
 
   accountSection: {
-    gap: 26,
-    marginBottom: 46,
+    gap: 42,
+    marginBottom: 62,
   },
 
   infoRow: {
+    position: "relative",
     flexDirection: "row",
     alignItems: "center",
   },
 
   infoLabel: {
-    width: 95,
-    color: "#333333",
-    fontSize: 11,
+    color: "#303030",
+    fontSize: 8,
     fontWeight: "500",
   },
 
   infoValue: {
-    color: "#333333",
+    position: "absolute",
+    left: "40%",
+    color: "#303030",
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "700",
   },
 
   sectionTitle: {
-    marginBottom: 16,
-    color: "#444444",
-    fontSize: 11,
-    fontWeight: "600",
+    marginBottom: 20,
+    color: "#000",
+    fontSize: 8,
+    fontWeight: "500",
   },
 
   settingGroup: {
-    gap: 18,
-    marginBottom: 42,
+    gap: 22,
+    marginBottom: 61,
   },
 
   settingRow: {
@@ -400,21 +402,21 @@ const styles = StyleSheet.create({
   },
 
   settingText: {
-    color: "#333333",
+    color: "#303030",
     fontSize: 13,
     fontWeight: "500",
   },
 
   toggle: {
-    width: 38,
-    height: 21,
+    width: 40,
+    height: 22,
     borderRadius: 999,
     padding: 2,
     justifyContent: "center",
   },
 
   toggleActive: {
-    backgroundColor: "#06283D",
+    backgroundColor: "#071F30",
   },
 
   toggleInactive: {
@@ -439,20 +441,20 @@ const styles = StyleSheet.create({
   themeRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 38,
-    marginLeft: 26,
+    justifyContent: "center",
+    gap: 50,
   },
 
   themeOption: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 9,
+    gap: 14,
   },
 
   radioOuter: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 22,
+    height: 22,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: "#D9D9D9",
     justifyContent: "center",
@@ -464,24 +466,24 @@ const styles = StyleSheet.create({
   },
 
   radioInner: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 12,
+    height: 12,
+    borderRadius: 50,
     backgroundColor: "#06283D",
   },
 
   themeText: {
-    color: "#333333",
+    color: "#303030",
     fontSize: 13,
     fontWeight: "500",
   },
 
   divider: {
     height: 1,
-    backgroundColor: "#E7E7E7",
-    marginTop: 10,
+    backgroundColor: "#D9D9D9",
+    marginTop: 12,
     marginBottom: 20,
-    marginHorizontal: 25,
+    marginHorizontal: 20,
   },
 
   autoRow: {
@@ -492,13 +494,13 @@ const styles = StyleSheet.create({
 
   withdrawButton: {
     marginTop: "auto",
-    paddingTop: 80,
+    paddingTop: 83,
     alignItems: "center",
   },
 
   withdrawText: {
-    color: "#FF3B30",
-    fontSize: 12,
-    fontWeight: "600",
+    color: "#F00",
+    fontSize: 13,
+    fontWeight: "500",
   },
 });
