@@ -14,22 +14,37 @@ export interface Todo {
 }
 
 interface TodoContextType {
+  // 리스트
   todos: Todo[];
   addTodo: (todo: Todo) => void;
   updateTodo: (todo: Todo) => void;
   deleteTodo: (id: string) => void;
+
+  // 타이머
+  elapsedSeconds: number;
+  isTimerRunning: boolean;
+
+  setElapsedSeconds: (
+    seconds: number
+  ) => void;
+
+  setIsTimerRunning: (
+    running: boolean
+  ) => void;
+
+  resetTimer: () => void;
 }
 
-const TodoContext = createContext<TodoContextType>(
-  {} as TodoContextType
-);
+const TodoContext =
+  createContext<TodoContextType>(
+    {} as TodoContextType
+  );
 
 export function TodoProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   const [todos, setTodos] = useState<Todo[]>([
     {
       id: "1",
@@ -57,31 +72,70 @@ export function TodoProvider({
     },
   ]);
 
+  // -------------------------
+  // 리스트 CRUD
+  // -------------------------
+
   const addTodo = (todo: Todo) => {
-    setTodos((prev) => [...prev, todo]);
+    setTodos((prev) => [
+      ...prev,
+      todo,
+    ]);
   };
 
   const updateTodo = (todo: Todo) => {
     setTodos((prev) =>
       prev.map((item) =>
-        item.id === todo.id ? todo : item
+        item.id === todo.id
+          ? todo
+          : item
       )
     );
   };
 
   const deleteTodo = (id: string) => {
     setTodos((prev) =>
-      prev.filter((item) => item.id !== id)
+      prev.filter(
+        (item) => item.id !== id
+      )
     );
+  };
+
+  // -------------------------
+  // 타이머 상태
+  // -------------------------
+
+  const [
+    elapsedSeconds,
+    setElapsedSeconds,
+  ] = useState(0);
+
+  const [
+    isTimerRunning,
+    setIsTimerRunning,
+  ] = useState(false);
+
+  // 타이머 초기화
+  const resetTimer = () => {
+    setElapsedSeconds(0);
+    setIsTimerRunning(false);
   };
 
   return (
     <TodoContext.Provider
       value={{
+        // 리스트
         todos,
         addTodo,
         updateTodo,
         deleteTodo,
+
+        // 타이머
+        elapsedSeconds,
+        isTimerRunning,
+        setElapsedSeconds,
+        setIsTimerRunning,
+        resetTimer,
       }}
     >
       {children}

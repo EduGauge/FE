@@ -8,35 +8,40 @@ import {
   Text,
   View,
 } from "react-native";
-import { useTodos } from "../context/TodoContext";
 
 import ListCard from "../components/ListCard";
-
+import { useTodos } from "../context/TodoContext";
 
 export default function ListScreen() {
+  const {
+    todos,
+    updateTodo,
+    elapsedSeconds,
+    setIsTimerRunning,
+  } = useTodos();
 
-  const {todos, updateTodo} = useTodos();
+  // -------------------------
+  // 카테고리별 리스트 묶기
+  // -------------------------
 
   const groupedTodos = useMemo(() => {
-
     return todos.reduce(
       (acc, todo) => {
-
         if (!acc[todo.category]) {
-
           acc[todo.category] = [];
-
         }
 
         acc[todo.category].push(todo);
 
         return acc;
-
       },
       {} as Record<string, typeof todos>
     );
-
   }, [todos]);
+
+  // -------------------------
+  // 리스트 완료율
+  // -------------------------
 
   const checkedCount = todos.filter(
     (todo) => todo.checked
@@ -47,25 +52,66 @@ export default function ListScreen() {
       ? 0
       : (checkedCount / todos.length) * 100;
 
+  // -------------------------
+  // 리스트 체크
+  // -------------------------
+
   const handleCheck = (id: string) => {
-
     const todo = todos.find(
-    (item) => item.id === id
-   );
+      (item) => item.id === id
+    );
 
-     if (!todo) return;
+    if (!todo) {
+      return;
+    }
 
-      updateTodo({
-        ...todo,
-        checked: !todo.checked,
-     });
+    updateTodo({
+      ...todo,
+      checked: !todo.checked,
+    });
+  };
 
-    };
+  // -------------------------
+  // 시간 표시
+  // -------------------------
 
-    return (
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(
+      seconds / 3600
+    );
+
+    const minutes = Math.floor(
+      (seconds % 3600) / 60
+    );
+
+    const secs = seconds % 60;
+
+    return `${hours
+      .toString()
+      .padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // -------------------------
+  // 타이머 시작
+  // -------------------------
+
+  const handleStartTimer = () => {
+    setIsTimerRunning(true);
+
+    router.push("/timer");
+  };
+
+  return (
     <View style={styles.container}>
 
-      {/* Header */}
+      {/* =========================
+          Header
+      ========================= */}
+
       <View style={styles.header}>
 
         <Text style={styles.logo}>
@@ -105,15 +151,25 @@ export default function ListScreen() {
 
       <View style={styles.divider} />
 
+      {/* =========================
+          총 시간
+      ========================= */}
+
       <Text style={styles.totalLabel}>
         총 시간
       </Text>
 
       <Text style={styles.totalTime}>
-        00:00
+        {formatTime(elapsedSeconds)}
       </Text>
 
-      <View style={styles.progressBackground}>
+      {/* =========================
+          리스트 완료 진행도
+      ========================= */}
+
+      <View
+        style={styles.progressBackground}
+      >
 
         <View
           style={[
@@ -125,6 +181,10 @@ export default function ListScreen() {
         />
 
       </View>
+
+      {/* =========================
+          리스트 Header
+      ========================= */}
 
       <View style={styles.listHeader}>
 
@@ -146,12 +206,23 @@ export default function ListScreen() {
 
       </View>
 
+      {/* =========================
+          리스트 카드
+      ========================= */}
+
       <ScrollView
         style={styles.scroll}
-        showsVerticalScrollIndicator={false}
+        contentContainerStyle={
+          styles.scrollContent
+        }
+        showsVerticalScrollIndicator={
+          false
+        }
       >
 
-        {Object.entries(groupedTodos).map(
+        {Object.entries(
+          groupedTodos
+        ).map(
           ([category, items]) => (
 
             <ListCard
@@ -165,6 +236,99 @@ export default function ListScreen() {
         )}
 
       </ScrollView>
+
+      {/* =========================
+          타이머 버튼
+      ========================= */}
+
+      <Pressable
+        style={styles.timerButton}
+        onPress={handleStartTimer}
+      >
+
+        <Ionicons
+          name="play"
+          size={42}
+          color="#10243A"
+        />
+
+      </Pressable>
+
+      {/* =========================
+          하단 네비게이션
+      ========================= */}
+
+      <View style={styles.bottomNav}>
+
+        {/* 캘린더 */}
+
+        <Pressable
+          style={styles.navItem}
+          onPress={() =>
+            router.push("/calendar")
+          }
+        >
+
+          <Ionicons
+            name="calendar-outline"
+            size={22}
+            color="#FFFFFF"
+          />
+
+          <Text style={styles.navText}>
+            캘린더
+          </Text>
+
+        </Pressable>
+
+        {/* 리스트 */}
+
+        <Pressable
+          style={styles.navItem}
+          onPress={() =>
+            router.push("/list")
+          }
+        >
+
+          <Ionicons
+            name="list-outline"
+            size={22}
+            color="#F6D64A"
+          />
+
+          <Text
+            style={[
+              styles.navText,
+              styles.activeNavText,
+            ]}
+          >
+            리스트
+          </Text>
+
+        </Pressable>
+
+        {/* 친구 */}
+
+        <Pressable
+          style={styles.navItem}
+          onPress={() =>
+            router.push("/friend")
+          }
+        >
+
+          <Ionicons
+            name="people-outline"
+            size={22}
+            color="#FFFFFF"
+          />
+
+          <Text style={styles.navText}>
+            친구
+          </Text>
+
+        </Pressable>
+
+      </View>
 
     </View>
   );
@@ -256,4 +420,48 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
 
+  scrollContent: {
+  paddingBottom: 170,
+},
+
+timerButton: {
+  position: "absolute",
+  bottom: 88,
+  alignSelf: "center",
+  width: 70,
+  height: 70,
+  borderRadius: 35,
+  backgroundColor: "#F6D64A",
+  justifyContent: "center",
+  alignItems: "center",
+},
+
+bottomNav: {
+  position: "absolute",
+  left: 0,
+  right: 0,
+  bottom: 0,
+  height: 72,
+  backgroundColor: "#10243A",
+  flexDirection: "row",
+  justifyContent: "space-around",
+  alignItems: "center",
+  paddingHorizontal: 28,
+},
+
+navItem: {
+  width: 70,
+  alignItems: "center",
+  justifyContent: "center",
+},
+
+navText: {
+  marginTop: 4,
+  color: "#FFFFFF",
+  fontSize: 11,
+},
+
+activeNavText: {
+  color: "#F6D64A",
+},
 });
