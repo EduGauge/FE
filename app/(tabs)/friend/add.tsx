@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   Pressable,
@@ -9,11 +8,11 @@ import {
 
 export default function FriendAddScreen() {
   const handleAddById = () => {
-    console.log("아이디로 친구 추가");
+    router.push("/friend/addId");
   };
 
   const handleAddByNickname = () => {
-    console.log("닉네임으로 친구 추가");
+    router.push("/friend/addNickname");
   };
 
   return (
@@ -51,17 +50,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#071F30",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   buttonGroup: {
-    marginTop: 250,
+    width: "100%",
     paddingHorizontal: 22,
-    gap: 14,
+    gap: 17,
   },
 
   addButton: {
-    height: 52,
-    borderRadius: 26,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",

@@ -1,7 +1,3 @@
-import {
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   Image,
@@ -20,14 +16,16 @@ export default function FriendScreen() {
         </Text>
 
         <Pressable
-          onPress={() => router.push("/friend/add")}
+          onPress={() =>
+            router.push("/friend/add")
+          }
           hitSlop={12}
           style={styles.addButton}
         >
-          <MaterialIcons
-            name="add"
-            size={28}
-            color="#FFFFFF"
+          <Image
+            source={require("../../../assets/icons/plus.png")}
+            style={styles.addIcon}
+            resizeMode="contain"
           />
 
           <View style={styles.redDot} />
@@ -35,10 +33,10 @@ export default function FriendScreen() {
       </View>
 
       <View style={styles.descriptionContainer}>
-        <Ionicons
-          name="chatbubble-ellipses-outline"
-          size={13}
-          color="#FFFFFF"
+        <Image
+          source={require("../../../assets/icons/messenger.png")}
+          style={styles.messangerIcon}
+          resizeMode="contain"
         />
 
         <Text style={styles.description}>
@@ -76,47 +74,58 @@ const styles = StyleSheet.create({
 
   title: {
     color: "#FFFFFF",
-    fontSize: 30,
-    fontWeight: "700",
+    fontSize: 16,
+    fontWeight: "500",
   },
 
   addButton: {
-    marginLeft: 4,
+    marginLeft: 5,
     justifyContent: "center",
     alignItems: "center",
   },
 
+  addIcon: {
+    width: 18,
+    height: 18,
+  },
+
   redDot: {
     position: "absolute",
-    top: 2,
-    right: 0,
-    width: 6,
-    height: 6,
+    top: -3,
+    right: -3,
+    width: 5,
+    height: 5,
     borderRadius: 3,
     backgroundColor: "#FF3131",
   },
 
   descriptionContainer: {
-    marginTop: 8,
+    marginTop: 11,
     flexDirection: "row",
     alignItems: "center",
   },
 
+  messangerIcon: {
+    width: 12,
+    height: 12,
+  },
+
   description: {
-    marginLeft: 4,
+    marginLeft: 5,
     color: "#FFFFFF",
     fontSize: 12,
+    fontWeight: "400",
   },
 
   character: {
-    width: 120,
-    height: 120,
-    marginTop: 40,
+    width: 76,
+    height: 82,
+    marginTop: 36,
   },
 
   emptyText: {
-    marginTop: 28,
+    marginTop: 35,
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 13,
   },
 });
