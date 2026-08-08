@@ -5,8 +5,12 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { useModal } from "../../../components/ModalProvider";
 
 export default function FriendLayout() {
+  const { openProfile, openNotification } =
+    useModal();
+
   return (
     <Stack
       screenOptions={{
@@ -40,7 +44,7 @@ export default function FriendLayout() {
         headerRight: () => (
           <View style={styles.headerRight}>
             <Pressable
-              onPress={() => router.push("/mypage")}
+              onPress={openProfile}
               hitSlop={10}
             >
               <Ionicons
@@ -51,9 +55,7 @@ export default function FriendLayout() {
             </Pressable>
 
             <Pressable
-              onPress={() =>
-                router.push("/notification")
-              }
+              onPress={openNotification}
               hitSlop={10}
               style={styles.menuButton}
             >

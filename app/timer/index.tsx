@@ -14,10 +14,14 @@ import {
   View,
 } from "react-native";
 
-import ListCard from "../components/ListCard";
-import { useTodos } from "../context/TodoContext";
+import ListCard from "../../components/ListCard";
+import { useModal } from "../../components/ModalProvider";
+import { useTodos } from "../../context/TodoContext";
 
 export default function TimerScreen() {
+  const { openProfile, openNotification } =
+    useModal();
+
   const {
     todos,
     updateTodo,
@@ -220,7 +224,7 @@ export default function TimerScreen() {
 
           <Pressable
             onPress={() =>
-              router.push("/mypage")
+              openProfile()
             }
           >
             <Ionicons
@@ -233,9 +237,7 @@ export default function TimerScreen() {
           <Pressable
             style={styles.menuButton}
             onPress={() =>
-              router.push(
-                "/notification"
-              )
+              openNotification()
             }
           >
             <Ionicons

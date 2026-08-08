@@ -15,6 +15,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { useModal } from "../../components/ModalProvider";
 
 // =========================
 // 화면 크기
@@ -41,6 +42,9 @@ const CAMERA_SIZE = Math.min(
 );
 
 export default function CameraScreen() {
+  const { openProfile, openNotification } =
+    useModal();
+
   const cameraRef =
     useRef<CameraView | null>(null);
 
@@ -223,11 +227,7 @@ export default function CameraScreen() {
 
           <Pressable
             hitSlop={10}
-            onPress={() =>
-              router.push(
-                "/mypage"
-              )
-            }
+            onPress={openProfile}
           >
             <Ionicons
               name="person-circle"
@@ -239,11 +239,7 @@ export default function CameraScreen() {
           <Pressable
             style={styles.menuButton}
             hitSlop={10}
-            onPress={() =>
-              router.push(
-                "/notification"
-              )
-            }
+            onPress={openNotification}
           >
             <Ionicons
               name="ellipsis-vertical"

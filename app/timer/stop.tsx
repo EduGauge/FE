@@ -12,9 +12,13 @@ import {
   View,
 } from "react-native";
 
-import { useTodos } from "../context/TodoContext";
+import { useTodos } from "../../context/TodoContext";
+import { useModal } from "../../components/ModalProvider";
 
 export default function TimerStopScreen() {
+  const { openProfile, openNotification } =
+    useModal();
+
   const { todos } = useTodos();
 
   const params = useLocalSearchParams<{
@@ -98,7 +102,7 @@ export default function TimerStopScreen() {
 
           <Pressable
             onPress={() =>
-              router.push("/mypage")
+              openProfile()
             }
           >
             <Ionicons
@@ -111,7 +115,7 @@ export default function TimerStopScreen() {
           <Pressable
             style={styles.menuButton}
             onPress={() =>
-              router.push("/notification")
+              openNotification()
             }
           >
             <Ionicons

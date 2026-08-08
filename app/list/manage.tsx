@@ -8,11 +8,12 @@ import {
   Text,
   View,
 } from "react-native";
-import { useCategories } from "../context/CategoryContext";
-import { useTodos } from "../context/TodoContext";
+import { useCategories } from "../../context/CategoryContext";
+import { useTodos } from "../../context/TodoContext";
 
-import CategoryAddModal from "../components/CategoryAddModal";
-import ManageCard from "../components/ManageCard";
+import CategoryAddModal from "../../components/CategoryAddModal";
+import ManageCard from "../../components/ManageCard";
+import { useModal } from "../../components/ModalProvider";
 
 interface Todo {
   id: string;
@@ -24,6 +25,9 @@ interface Todo {
 }
 
 export default function ManageScreen() {
+
+  const { openProfile, openNotification } =
+    useModal();
 
   const [showCategoryModal, setShowCategoryModal] =
     useState(false);
@@ -85,7 +89,7 @@ export default function ManageScreen() {
 
           <Pressable
             onPress={() =>
-              router.push("/profile")
+              openProfile()
             }
           >
             <Ionicons
@@ -98,7 +102,7 @@ export default function ManageScreen() {
           <Pressable
             style={{ marginLeft: 12 }}
             onPress={() =>
-              router.push("/notification")
+              openNotification()
             }
           >
             <Ionicons

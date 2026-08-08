@@ -7,14 +7,14 @@ import {
   TextInput,
   View
 } from "react-native";
-import { useCategories } from "../context/CategoryContext";
-import { useTodos } from "../context/TodoContext";
+import { useCategories } from "../../context/CategoryContext";
+import { useTodos } from "../../context/TodoContext";
 
-import CancelModal from "../components/CancelModal";
-import CategoryAddModal from "../components/CategoryAddModal";
-import CategorySelectModal from "../components/CategorySelectModal";
-import DeleteModal from "../components/DeleteModal";
-import RepeatModal from "../components/RepeatModal";
+import CancelModal from "../../components/CancelModal";
+import CategoryAddModal from "../../components/CategoryAddModal";
+import CategorySelectModal from "../../components/CategorySelectModal";
+import DeleteModal from "../../components/DeleteModal";
+import RepeatModal from "../../components/RepeatModal";
 
 export default function AlterList() {
   const {
