@@ -2,6 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import {
+  Image,
+  ImageSourcePropType,
   Pressable,
   StyleSheet,
   Text,
@@ -12,8 +14,29 @@ import CalendarRecordModal, {
   CalendarRecord,
 } from "../../../components/CalendarRecordModal";
 
+
+// 100%
+const character100 = require(
+  "../../../assets/characters/calender_1.png"
+);
+
+// 70%
+const character70 = require(
+  "../../../assets/characters/calender_2.png"
+);
+
+// 30%
+const character30 = require(
+  "../../../assets/characters/calender_3.png"
+);
+
+// 0%
+const character0 = require(
+  "../../../assets/characters/calender_4.png"
+);
+
 // =========================
-// 테스트용 날짜
+// 현재 표시할 년 / 월
 // =========================
 
 const YEAR = 2026;
@@ -33,6 +56,7 @@ const RECORDS: Record<
     elapsedSeconds: 3,
     completed: true,
     photo: true,
+
     todos: [
       {
         id: "1",
@@ -64,6 +88,7 @@ const RECORDS: Record<
     elapsedSeconds: 90,
     completed: true,
     photo: true,
+
     todos: [
       {
         id: "4",
@@ -88,6 +113,7 @@ const RECORDS: Record<
     elapsedSeconds: 90,
     completed: false,
     photo: false,
+
     todos: [
       {
         id: "6",
@@ -114,28 +140,26 @@ const RECORDS: Record<
   },
 };
 
-// =========================
-// 캐릭터
-// 나중에 실제 이미지로 교체
-// =========================
+
 
 const getCharacter = (
   progress: number
-) => {
+): ImageSourcePropType => {
   if (progress >= 100) {
-    return "😄";
+    return character100;
   }
 
   if (progress >= 70) {
-    return "🙂";
+    return character70;
   }
 
   if (progress >= 30) {
-    return "😐";
+    return character30;
   }
 
-  return "😣";
+  return character0;
 };
+
 
 export default function CalendarScreen() {
   const [
@@ -145,9 +169,7 @@ export default function CalendarScreen() {
     null
   );
 
-  // =========================
-  // 해당 월 날짜 생성
-  // =========================
+  
 
   const calendarDays = useMemo(() => {
     const firstDay = new Date(
@@ -166,12 +188,13 @@ export default function CalendarScreen() {
       number | null
     )[] = [];
 
-    // 월요일부터 시작하도록 변환
+    // 월요일 시작
     const mondayStart =
       firstDay === 0
         ? 6
         : firstDay - 1;
 
+    // 빈 칸
     for (
       let i = 0;
       i < mondayStart;
@@ -180,6 +203,7 @@ export default function CalendarScreen() {
       days.push(null);
     }
 
+    // 날짜
     for (
       let day = 1;
       day <= lastDate;
@@ -191,9 +215,7 @@ export default function CalendarScreen() {
     return days;
   }, []);
 
-  // =========================
-  // 날짜 Key
-  // =========================
+
 
   const getDateKey = (
     day: number
@@ -205,9 +227,7 @@ export default function CalendarScreen() {
     ).padStart(2, "0")}`;
   };
 
-  // =========================
-  // 날짜 클릭
-  // =========================
+
 
   const handleDayPress = (
     day: number
@@ -225,6 +245,8 @@ export default function CalendarScreen() {
   return (
     <View style={styles.container}>
 
+     
+
       <View style={styles.header}>
 
         <Pressable
@@ -241,17 +263,20 @@ export default function CalendarScreen() {
           />
         </Pressable>
 
-        <Text style={styles.headerTitle}>
+        <Text
+          style={styles.headerTitle}
+        >
           달력
         </Text>
 
         <View
           style={styles.headerRight}
         >
+
           <Pressable
             hitSlop={10}
             onPress={() =>
-              router.push("/mypage")
+              router.push("/profile")
             }
           >
             <Ionicons
@@ -276,12 +301,12 @@ export default function CalendarScreen() {
               color="#FFFFFF"
             />
           </Pressable>
+
         </View>
 
       </View>
 
-
-
+      
       <View
         style={styles.monthHeader}
       >
@@ -297,7 +322,10 @@ export default function CalendarScreen() {
         <View
           style={styles.monthTitle}
         >
-          <Text style={styles.yearText}>
+
+          <Text
+            style={styles.yearText}
+          >
             {YEAR}
           </Text>
 
@@ -306,6 +334,7 @@ export default function CalendarScreen() {
           >
             JULY
           </Text>
+
         </View>
 
         <Pressable hitSlop={10}>
@@ -318,9 +347,10 @@ export default function CalendarScreen() {
 
       </View>
 
-
+    
 
       <View style={styles.weekRow}>
+
         {[
           "월",
           "화",
@@ -337,8 +367,8 @@ export default function CalendarScreen() {
             {day}
           </Text>
         ))}
-      </View>
 
+      </View>
 
 
       <View
@@ -348,6 +378,7 @@ export default function CalendarScreen() {
         {calendarDays.map(
           (day, index) => {
 
+            // 빈 칸
             if (day === null) {
               return (
                 <View
@@ -369,20 +400,20 @@ export default function CalendarScreen() {
                 style={styles.dayCell}
               >
 
-                {/* 캐릭터 */}
+
                 {record && (
-                  <Text
+                  <Image
+                    source={getCharacter(
+                      record.progress
+                    )}
                     style={
                       styles.dayCharacter
                     }
-                  >
-                    {getCharacter(
-                      record.progress
-                    )}
-                  </Text>
+                  />
                 )}
 
-                {/* 날짜 */}
+                
+
                 <Pressable
                   style={[
                     styles.dayCircle,
@@ -390,9 +421,7 @@ export default function CalendarScreen() {
                       styles.recordDayCircle,
                   ]}
                   onPress={() =>
-                    handleDayPress(
-                      day
-                    )
+                    handleDayPress(day)
                   }
                   disabled={!hasRecord}
                 >
@@ -417,31 +446,32 @@ export default function CalendarScreen() {
       >
 
         <GaugeRow
-          character="😄"
+          character={character100}
           label="EDUGAUGE 100%"
           progress={100}
         />
 
         <GaugeRow
-          character="🙂"
+          character={character70}
           label="EDUGAUGE 70 - 99%"
           progress={75}
         />
 
         <GaugeRow
-          character="😐"
+          character={character30}
           label="EDUGAUGE 30 - 69%"
           progress={50}
         />
 
         <GaugeRow
-          character="😣"
+          character={character0}
           label="EDUGAUGE 0 - 29%"
           progress={22}
         />
 
-      </View>      
+      </View>
 
+      
 
       <CalendarRecordModal
         visible={
@@ -457,29 +487,37 @@ export default function CalendarScreen() {
   );
 }
 
+
 function GaugeRow({
   character,
   label,
   progress,
 }: {
-  character: string;
+  character: ImageSourcePropType;
   label: string;
   progress: number;
 }) {
   return (
     <View style={styles.gaugeRow}>
 
-      <Text
-        style={styles.gaugeCharacter}
-      >
-        {character}
-      </Text>
+      
+
+      <Image
+        source={character}
+        style={
+          styles.gaugeCharacter
+        }
+      />
+
+      
 
       <Text
         style={styles.gaugeLabel}
       >
         {label}
       </Text>
+
+      
 
       <View
         style={styles.gaugeTrack}
@@ -494,6 +532,8 @@ function GaugeRow({
         />
       </View>
 
+      
+
       <Text
         style={styles.gaugePercent}
       >
@@ -503,6 +543,7 @@ function GaugeRow({
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -591,8 +632,10 @@ const styles = StyleSheet.create({
   dayCharacter: {
     position: "absolute",
     top: -4,
-    fontSize: 18,
+    width: 24,
+    height: 24,
     zIndex: 1,
+    resizeMode: "contain",
   },
 
   dayCircle: {
@@ -631,8 +674,10 @@ const styles = StyleSheet.create({
   },
 
   gaugeCharacter: {
-    width: 32,
-    fontSize: 19,
+    width: 28,
+    height: 28,
+    marginRight: 4,
+    resizeMode: "contain",
   },
 
   gaugeLabel: {
@@ -661,5 +706,4 @@ const styles = StyleSheet.create({
     fontSize: 9,
     textAlign: "right",
   },
-
 });
