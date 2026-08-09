@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "500",
   },
 
   addButton: {
@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    marginTop: 22,
-    gap: 18,
+    marginTop: 17,
+    gap: 20,
   },
 
   friendRow: {
-    height: 39,
+    height: 36,
     borderRadius: 20,
-    backgroundColor: "#485342",
+    backgroundColor: "#3E4935",
     flexDirection: "row",
     alignItems: "center",
     overflow: "hidden",
@@ -149,24 +149,22 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     borderRadius: 20,
-    backgroundColor: "#F5D83F",
+    backgroundColor: "#E3C943",
   },
 
   avatarContainer: {
-    width: 39,
-    height: 39,
+    width: 36,
+    height: 36,
     borderRadius: 20,
-    backgroundColor: "#F5D83F",
-    borderWidth: 2,
-    borderColor: "#FFFFFF",
+    backgroundColor: "#E3C943",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
   },
 
   avatar: {
-    width: 28,
-    height: 28,
+    width: 21,
+    height: 19,
   },
 
   friendName: {
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
 
   wakeText: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "500",
   },
 });

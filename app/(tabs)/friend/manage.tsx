@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "600",
-    marginLeft: 4,
+    fontSize: 16,
+    fontWeight: "500",
+    marginLeft: 30,
     marginBottom: 18,
   },
 
   buttonGroup: {
-    gap: 14,
+    gap: 17,
   },
 
   addButton: {
@@ -115,28 +115,28 @@ const styles = StyleSheet.create({
 
   addButtonText: {
     color: "#071F30",
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "700",
   },
 
   friendTitle: {
     color: "#FFFFFF",
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "500",
-    marginTop: 22,
-    marginLeft: 4,
+    marginTop: 20,
+    marginLeft: 30,
   },
 
   list: {
-    marginTop: 16,
-    gap: 16,
+    marginTop: 17,
+    gap: 20,
     paddingHorizontal: 20,
   },
 
   friendRow: {
-    height: 39,
+    height: 36,
     borderRadius: 20,
-    backgroundColor: "#485342",
+    backgroundColor: "#3E4935",
     flexDirection: "row",
     alignItems: "center",
     overflow: "hidden",
@@ -148,28 +148,26 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     borderRadius: 20,
-    backgroundColor: "#F5D83F",
+    backgroundColor: "#E3C943",
   },
 
   avatarContainer: {
-    width: 39,
-    height: 39,
+    width: 36,
+    height: 36,
     borderRadius: 20,
-    backgroundColor: "#F5D83F",
-    borderWidth: 2,
-    borderColor: "#FFFFFF",
+    backgroundColor: "#E3C943",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
   },
 
   avatar: {
-    width: 28,
-    height: 28,
+    width: 21,
+    height: 19,
   },
 
   friendName: {
-    marginLeft: 12,
+    marginLeft: 5,
     color: "#071F30",
     fontSize: 13,
     fontWeight: "500",
