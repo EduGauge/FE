@@ -72,7 +72,7 @@ export default function ListCard({
 
          <Ionicons
             name="ellipse-outline"
-            size={22}
+            size={15}
             color="#FFFFFF"
         />
 
@@ -94,7 +94,7 @@ export default function ListCard({
 const styles = StyleSheet.create({
 
   card: {
-    marginTop: 38,
+    marginTop: 14,
     marginBottom: 22,
     position: "relative",
   },
@@ -103,29 +103,24 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: 42,
+    height: 36,
     backgroundColor: "#FFFFFF",
     borderRadius: 21,
     justifyContent: "center",
     alignItems: "center",
-    transform: [
-      {
-        translateY: -18,
-      },
-    ],
     zIndex: 100,
   },
 
   categoryText: {
-    color: "#10243A",
+    color: "#071F30",
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "500",
   },
 
   todoContainer: {
-    backgroundColor: "#5B6875",
+    backgroundColor: "#455764",
     borderRadius: 18,
-    paddingTop: 34,
+    paddingTop: 36,
     paddingBottom: 10,
   },
 
@@ -144,15 +139,15 @@ const styles = StyleSheet.create({
   },
 
   checkedText: {
-    color: "#F6D64A",
+    color: "#E3C943",
     textDecorationLine: "line-through",
     textDecorationColor: "F6D64A",
   },
 
   checkedCircle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
     backgroundColor: "#F6D64A",
     justifyContent: "center",
     alignItems: "center",
