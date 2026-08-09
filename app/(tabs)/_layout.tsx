@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-<<<<<<< HEAD
 import { router, Tabs } from "expo-router";
 import {
   Pressable,
@@ -7,9 +6,6 @@ import {
   View,
 } from "react-native";
 import { useModal } from "../../components/ModalProvider";
-=======
-import { Tabs } from "expo-router";
->>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 
 export default function TabLayout() {
   const { openProfile, openNotification } =
@@ -18,7 +14,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-<<<<<<< HEAD
         headerShown: true,
 
         headerStyle: {
@@ -82,9 +77,6 @@ export default function TabLayout() {
         headerRightContainerStyle: {
           paddingRight: 16,
         },
-=======
-        headerShown: false,
->>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 
         tabBarActiveTintColor: "#F5CE3E",
         tabBarInactiveTintColor: "#FFFFFF",
@@ -161,6 +153,12 @@ export default function TabLayout() {
       
       <Tabs.Screen
         name="friend"
+        listeners={{
+          tabPress: (event) => {
+            event.preventDefault();
+            router.replace("/friend");
+          },
+        }}
         options={{
           title: "친구",
           tabBarLabel: "친구",
@@ -187,7 +185,6 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-<<<<<<< HEAD
 }
 
 const styles = StyleSheet.create({
@@ -205,6 +202,3 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 });
-=======
-}
->>>>>>> 4a9915e (feat: 캘린더 탭 수정중)

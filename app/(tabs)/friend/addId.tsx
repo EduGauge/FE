@@ -15,16 +15,13 @@ export default function FriendAddIdScreen() {
   const handleConfirm = () => {
     const trimmedId = friendId.trim();
 
-    if (!trimmedId) {
-      return;
-    }
-
     console.log(
       "아이디로 친구 추가:",
       trimmedId,
     );
 
     // 나중에 친구 추가 API 연결
+    router.dismissAll();
   };
 
   const handleCancel = () => {
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     height: 40,
-    width: 340,
+    width: "100%",
     borderRadius: 17,
     backgroundColor: "#C9CED2",
     flexDirection: "row",

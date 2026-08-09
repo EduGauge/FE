@@ -12,22 +12,12 @@ import {
   TextInput,
   View,
 } from "react-native";
-<<<<<<< HEAD
+
+import CancelModal from "../../components/CancelModal";
+import RepeatModal from "../../components/RepeatModal";
 import { useCategories } from "../../context/CategoryContext";
 import { useTodos } from "../../context/TodoContext";
 
-import CancelModal from "../../components/CancelModal";
-import CategorySelectModal from "../../components/CategorySelectModal";
-import RepeatModal from "../../components/RepeatModal";
-
-=======
-
-import CancelModal from "../components/CancelModal";
-import RepeatModal from "../components/RepeatModal";
-import { useCategories } from "../context/CategoryContext";
-import { useTodos } from "../context/TodoContext";
-
->>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 export default function CreateList() {
   const { addTodo } = useTodos();
 
@@ -107,6 +97,7 @@ export default function CreateList() {
   const handleOpenCategoryAddModal = () => {
     setNewCategoryName("");
     setShowCategoryAddModal(true);
+  };
 
   const handleCloseCategoryAddModal = () => {
     setNewCategoryName("");
@@ -825,12 +816,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-<<<<<<< HEAD
-listNameSection: {
-  marginBottom: 18,
-},
-});
-=======
   categoryItemText: {
     color: "#FFFFFF",
     fontSize: 16,
@@ -949,5 +934,3 @@ listNameSection: {
     fontWeight: "700",
   },
 });
-}
->>>>>>> 4a9915e (feat: 캘린더 탭 수정중)

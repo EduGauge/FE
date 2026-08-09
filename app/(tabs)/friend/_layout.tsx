@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
 import {
+  Image,
   Pressable,
   StyleSheet,
   View,
@@ -72,7 +73,15 @@ export default function FriendLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "친구",
+          headerTitle: "",
+          headerBackVisible: false,
+          headerLeft: () => (
+            <Image
+              source={require("../../../assets/logos/logo.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
 
@@ -82,11 +91,38 @@ export default function FriendLayout() {
           title: "친구 관리",
         }}
       />
+
+      <Stack.Screen
+        name="manage"
+        options={{
+          title: "친구 관리",
+        }}
+      />
+
+      <Stack.Screen
+        name="addId"
+        options={{
+          title: "친구 관리",
+        }}
+      />
+
+      <Stack.Screen
+        name="addNickname"
+        options={{
+          title: "친구 관리",
+        }}
+      />
     </Stack>
   );
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 87,
+    height: 23,
+    marginLeft: 17,
+  },
+
   headerLeftButton: {
     marginLeft: 16,
     justifyContent: "center",

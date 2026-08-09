@@ -16,16 +16,13 @@ export default function FriendAddNicknameScreen() {
     const trimmedNickname =
       friendNickname.trim();
 
-    if (!trimmedNickname) {
-      return;
-    }
-
     console.log(
       "닉네임으로 친구 추가:",
       trimmedNickname,
     );
 
     // 나중에 친구 추가 API 연결
+    router.dismissAll();
   };
 
   const handleCancel = () => {
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     height: 40,
-    width: 340,
+    width: "100%",
     borderRadius: 17,
     backgroundColor: "#C9CED2",
     flexDirection: "row",
