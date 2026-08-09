@@ -258,82 +258,6 @@ export default function ListScreen() {
 
       </Pressable>
 
-      {/* =========================
-          하단 네비게이션
-      ========================= */}
-
-      <View style={styles.bottomNav}>
-
-        {/* 캘린더 */}
-
-        <Pressable
-          style={styles.navItem}
-          onPress={() =>
-            router.push("/calendar")
-          }
-        >
-
-          <Ionicons
-            name="calendar-outline"
-            size={22}
-            color="#FFFFFF"
-          />
-
-          <Text style={styles.navText}>
-            캘린더
-          </Text>
-
-        </Pressable>
-
-        {/* 리스트 */}
-
-        <Pressable
-          style={styles.navItem}
-          onPress={() =>
-            router.push("/list")
-          }
-        >
-
-          <Ionicons
-            name="list-outline"
-            size={22}
-            color="#F6D64A"
-          />
-
-          <Text
-            style={[
-              styles.navText,
-              styles.activeNavText,
-            ]}
-          >
-            리스트
-          </Text>
-
-        </Pressable>
-
-        {/* 친구 */}
-
-        <Pressable
-          style={styles.navItem}
-          onPress={() =>
-            router.push("/friend")
-          }
-        >
-
-          <Ionicons
-            name="people-outline"
-            size={22}
-            color="#FFFFFF"
-          />
-
-          <Text style={styles.navText}>
-            친구
-          </Text>
-
-        </Pressable>
-
-      </View>
-
     </View>
   );
 }
@@ -438,31 +362,6 @@ timerButton: {
   backgroundColor: "#F6D64A",
   justifyContent: "center",
   alignItems: "center",
-},
-
-bottomNav: {
-  position: "absolute",
-  left: 0,
-  right: 0,
-  bottom: 0,
-  height: 72,
-  backgroundColor: "#10243A",
-  flexDirection: "row",
-  justifyContent: "space-around",
-  alignItems: "center",
-  paddingHorizontal: 28,
-},
-
-navItem: {
-  width: 70,
-  alignItems: "center",
-  justifyContent: "center",
-},
-
-navText: {
-  marginTop: 4,
-  color: "#FFFFFF",
-  fontSize: 11,
 },
 
 activeNavText: {

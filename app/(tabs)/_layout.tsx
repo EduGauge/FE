@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+<<<<<<< HEAD
 import { router, Tabs } from "expo-router";
 import {
   Pressable,
@@ -6,6 +7,9 @@ import {
   View,
 } from "react-native";
 import { useModal } from "../../components/ModalProvider";
+=======
+import { Tabs } from "expo-router";
+>>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 
 export default function TabLayout() {
   const { openProfile, openNotification } =
@@ -14,6 +18,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+<<<<<<< HEAD
         headerShown: true,
 
         headerStyle: {
@@ -77,6 +82,9 @@ export default function TabLayout() {
         headerRightContainerStyle: {
           paddingRight: 16,
         },
+=======
+        headerShown: false,
+>>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 
         tabBarActiveTintColor: "#F5CE3E",
         tabBarInactiveTintColor: "#FFFFFF",
@@ -100,13 +108,18 @@ export default function TabLayout() {
         },
       }}
     >
+      
+
       <Tabs.Screen
         name="calendar"
         options={{
           title: "달력",
-          headerTitle: "달력",
           tabBarLabel: "달력",
-          tabBarIcon: ({ color, focused }) => (
+
+          tabBarIcon: ({
+            color,
+            focused,
+          }) => (
             <Ionicons
               name={
                 focused
@@ -120,36 +133,23 @@ export default function TabLayout() {
         }}
       />
 
+     
+
       <Tabs.Screen
         name="list"
         options={{
           title: "리스트",
-          headerTitle: "리스트",
           tabBarLabel: "리스트",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "list" : "list-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
 
-      <Tabs.Screen
-        name="friend"
-        options={{
-          title: "친구",
-          tabBarLabel: "친구",
-
-          // friend/_layout.tsx에서 헤더를 관리하므로
-          // Tabs의 헤더는 끈다.
-          headerShown: false,
-
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({
+            color,
+            focused,
+          }) => (
             <Ionicons
               name={
-                focused ? "people" : "people-outline"
+                focused
+                  ? "list"
+                  : "list-outline"
               }
               size={24}
               color={color}
@@ -157,8 +157,37 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      
+      <Tabs.Screen
+        name="friend"
+        options={{
+          title: "친구",
+          tabBarLabel: "친구",
+
+          tabBarIcon: ({
+            color,
+            focused,
+          }) => (
+            <Ionicons
+              name={
+                focused
+                  ? "people"
+                  : "people-outline"
+              }
+              size={24}
+              color={color}
+            />
+          ),
+          
+          // 친구 화면의 헤더는
+          // friend/_layout.tsx에서 관리
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
+<<<<<<< HEAD
 }
 
 const styles = StyleSheet.create({
@@ -176,3 +205,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 });
+=======
+}
+>>>>>>> 4a9915e (feat: 캘린더 탭 수정중)

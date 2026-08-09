@@ -1,12 +1,18 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { router, useLocalSearchParams, } from "expo-router";
-import { useEffect, useState } from "react";
+import { router } from "expo-router";
+import { useState } from "react";
 import {
-  Platform, Pressable, ScrollView, StyleSheet, Text,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
-  View
+  View,
 } from "react-native";
+<<<<<<< HEAD
 import { useCategories } from "../../context/CategoryContext";
 import { useTodos } from "../../context/TodoContext";
 
@@ -14,23 +20,31 @@ import CancelModal from "../../components/CancelModal";
 import CategorySelectModal from "../../components/CategorySelectModal";
 import RepeatModal from "../../components/RepeatModal";
 
+=======
+
+import CancelModal from "../components/CancelModal";
+import RepeatModal from "../components/RepeatModal";
+import { useCategories } from "../context/CategoryContext";
+import { useTodos } from "../context/TodoContext";
+
+>>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
 export default function CreateList() {
-
-  const { category, mode } =  useLocalSearchParams<{
-    category?: string;
-    mode?: string;
-  }>();
-
-  const [listName, setListName] = useState("");
-
   const { addTodo } = useTodos();
 
-  const { categories,  addCategory,  deleteCategory} = useCategories();
+  const {
+    categories,
+    addCategory,
+    deleteCategory,
+  } = useCategories();
+
+  const [listName, setListName] =
+    useState("");
 
   const [selectedCategory, setSelectedCategory] =
-    useState(category ?.toString() ?? "");
+    useState("");
 
-  const [repeat, setRepeat] = useState("없음");
+  const [repeat, setRepeat] =
+    useState("없음");
 
   const [repeatEnd, setRepeatEnd] =
     useState("없음");
@@ -38,10 +52,10 @@ export default function CreateList() {
   const [date, setDate] =
     useState(new Date());
 
-  const [showDatePicker, setShowDatePicker] =
+  const [showCategoryModal, setShowCategoryModal] =
     useState(false);
 
-  const [showCategoryModal, setShowCategoryModal] =
+  const [showCategoryAddModal, setShowCategoryAddModal] =
     useState(false);
 
   const [showRepeatModal, setShowRepeatModal] =
@@ -50,58 +64,87 @@ export default function CreateList() {
   const [showCancelModal, setShowCancelModal] =
     useState(false);
 
+  const [showDatePicker, setShowDatePicker] =
+    useState(false);
+
   const [isListNameFocused, setIsListNameFocused] =
     useState(false);
 
-  const [isCategoryFocused, setIsCategoryFocused] =
-    useState(false);
-
-  useEffect(() => {
-    if (category) {
-      setSelectedCategory(
-        category.toString()
-      );
-    }
-  }, [category]);
+  const [newCategoryName, setNewCategoryName] =
+    useState("");
 
   const isValid =
     listName.trim() !== "" &&
     selectedCategory !== "";
 
   const handleCreate = () => {
-    
-   if (mode === "newCategory" &&
-  !categories.includes(selectedCategory)
-   ) {
-    addCategory(selectedCategory);
-   }
+    if (!isValid) {
+      return;
+    }
 
-  addTodo({
-    id: Date.now().toString(),
-    title: listName,
-    category: selectedCategory,
-    repeat,
-    repeatEnd,
-    checked: false,
-  });
+    addTodo({
+      id: Date.now().toString(),
+      title: listName.trim(),
+      category: selectedCategory,
+      repeat,
+      repeatEnd,
+      checked: false,
+    });
+
     router.replace("/list");
-    setListName("");
-    setSelectedCategory("");
-    setRepeat("없음");
-    setRepeatEnd("없음");
-};
+  };
 
-
-  const handleDeleteCategory = (category: string) => {
+  const handleDeleteCategory = (
+    category: string
+  ) => {
     deleteCategory(category);
 
     if (selectedCategory === category) {
       setSelectedCategory("");
     }
-};
+  };
+
+  const handleOpenCategoryAddModal = () => {
+    setNewCategoryName("");
+    setShowCategoryAddModal(true);
+
+  const handleCloseCategoryAddModal = () => {
+    setNewCategoryName("");
+    setShowCategoryAddModal(false);
+  };
+
+  const handleAddCategory = () => {
+    const categoryName =
+      newCategoryName.trim();
+
+    if (categoryName === "") {
+      return;
+    }
+
+    // 이미 존재하는 카테고리라면 추가하지 않음
+    if (categories.includes(categoryName)) {
+      return;
+    }
+
+    addCategory(categoryName);
+
+    // 새로 만든 카테고리를
+    // 현재 리스트의 카테고리로 선택
+    setSelectedCategory(categoryName);
+
+    // 입력 초기화
+    setNewCategoryName("");
+
+    // 카테고리 추가 모달 닫기
+    setShowCategoryAddModal(false);
+  };
 
   return (
     <View style={styles.container}>
+
+      {/* =========================
+          헤더
+      ========================= */}
 
       <View style={styles.header}>
 
@@ -119,121 +162,115 @@ export default function CreateList() {
         </Pressable>
 
         <Text style={styles.headerTitle}>
-          {mode === "newCategory"
-          ? "새 카테고리 만들기"
-          : "리스트 생성"}
+          리스트 생성
         </Text>
 
       </View>
+
+  
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={
+          styles.content
+        }
       >
-      
-      <View style={styles.listNameSection}>
 
-        <View style={styles.inputContainer}>
 
-          <Text style={styles.inputLabel}>
-        리스트명
+        <View
+          style={styles.listNameSection}
+        >
+
+          <View
+            style={styles.inputContainer}
+          >
+
+            <Text
+              style={styles.inputLabel}
+            >
+              리스트명
+            </Text>
+
+            <TextInput
+              style={[
+                styles.input,
+                !isListNameFocused &&
+                  listName !== "" &&
+                  styles.inputRight,
+              ]}
+              placeholder=""
+              value={listName}
+              maxLength={20}
+              onFocus={() =>
+                setIsListNameFocused(true)
+              }
+              onBlur={() =>
+                setIsListNameFocused(false)
+              }
+              onChangeText={setListName}
+            />
+
+          </View>
+
+          <Text style={styles.countText}>
+            {listName.length}/20
           </Text>
-          
-          <TextInput
-        style={[
-          styles.input,
-          !isListNameFocused &&
-          listName !== "" &&
-          styles.inputRight,
-      ]}
-      placeholder=""
-      value={listName}
-      maxLength={20}
-      onFocus={() => setIsListNameFocused(true)}
-      onBlur={() => setIsListNameFocused(false)}
-      onChangeText={setListName}
-    />
 
-  </View>
+        </View>
 
-        <Text style={styles.countText}>
-          {listName.length}/20
-        </Text>
-      </View>
-
-
-        
-    {mode === "newCategory" ? (
-
-      <View style={styles.inputContainer}>
-
-        <Text style={styles.inputLabel}>
-          카테고리
-        </Text>
-
-    <TextInput
-      style={[
-        styles.input,
-        !isCategoryFocused &&
-          selectedCategory !== "" &&
-          styles.inputRight,
-        ]}
-      value={selectedCategory}
-      onChangeText={setSelectedCategory}
-      placeholder=""
-      placeholderTextColor="#CFCFCF"
-      onFocus={()=>setIsCategoryFocused(true)}
-      onBlur={()=>setIsCategoryFocused(false)}
-      maxLength={15}
-    />
-
-  </View>
-
-) : (
-
-  <Pressable
-    style={styles.inputContainer}
-    onPress={() =>
-      setShowCategoryModal(true)
-    }
-  >
-
-    <Text style={styles.inputLabel}>
-      카테고리
-    </Text>
-
-    <Text
-      style={[
-        styles.selectText,
-        selectedCategory === "" &&
-          styles.placeholder,
-      ]}
-    >
-      {selectedCategory || "선택"}
-    </Text>
-
-    <MaterialIcons
-      name="keyboard-arrow-down"
-      size={24}
-      color="#FFFFFF"
-    />
-
-  </Pressable>
-
-)}
-    
 
         <Pressable
-          style={[styles.inputContainer, styles.sectionSpacing]}
+          style={styles.inputContainer}
+          onPress={() =>
+            setShowCategoryModal(true)
+          }
+        >
+
+          <Text
+            style={styles.inputLabel}
+          >
+            카테고리
+          </Text>
+
+          <Text
+            style={[
+              styles.selectText,
+              selectedCategory === "" &&
+                styles.placeholder,
+            ]}
+          >
+            {selectedCategory || "선택"}
+          </Text>
+
+          <MaterialIcons
+            name="keyboard-arrow-down"
+            size={24}
+            color="#FFFFFF"
+          />
+
+        </Pressable>
+
+        
+
+        <Pressable
+          style={[
+            styles.inputContainer,
+            styles.sectionSpacing,
+          ]}
           onPress={() =>
             setShowRepeatModal(true)
           }
         >
-          <Text style={styles.inputLabel}>
+
+          <Text
+            style={styles.inputLabel}
+          >
             반복
           </Text>
 
-          <Text style={styles.selectText}>
+          <Text
+            style={styles.selectText}
+          >
             {repeat}
           </Text>
 
@@ -247,21 +284,32 @@ export default function CreateList() {
 
 
         <Pressable
-          style={[styles.inputContainer, styles.sectionSpacing]}
+          style={[
+            styles.inputContainer,
+            styles.sectionSpacing,
+          ]}
           onPress={() => {
-            if (repeat === "없음") return;
-            setShowDatePicker(true)
+            if (repeat === "없음") {
+              return;
+            }
+
+            setShowDatePicker(true);
           }}
         >
-          <Text style={styles.inputLabel}>
-            반복종료
-         </Text>
 
-          <Text style={[
-            styles.selectText,
-            repeatEnd !== "없음" &&
-            styles.placeholder,
-           ]}>
+          <Text
+            style={styles.inputLabel}
+          >
+            반복종료
+          </Text>
+
+          <Text
+            style={[
+              styles.selectText,
+              repeatEnd !== "없음" &&
+                styles.placeholder,
+            ]}
+          >
             {repeatEnd}
           </Text>
 
@@ -273,6 +321,8 @@ export default function CreateList() {
 
         </Pressable>
 
+       
+
         {showDatePicker && (
           <DateTimePicker
             value={date}
@@ -282,11 +332,15 @@ export default function CreateList() {
                 ? "inline"
                 : "default"
             }
-            onChange={(event, selectedDate) => {
+            onChange={(
+              event,
+              selectedDate
+            ) => {
               setShowDatePicker(false);
 
               if (selectedDate) {
                 setDate(selectedDate);
+
                 setRepeatEnd(
                   selectedDate.toLocaleDateString(
                     "ko-KR"
@@ -299,46 +353,300 @@ export default function CreateList() {
 
       </ScrollView>
 
+      
+
       <Pressable
         style={[
           styles.createButton,
-          !isValid && styles.disabledButton,
+          !isValid &&
+            styles.disabledButton,
         ]}
         disabled={!isValid}
         onPress={handleCreate}
       >
+
         <Text
           style={[
             styles.createButtonText,
-            !isValid && styles.disabledButtonText,
+            !isValid &&
+              styles.disabledButtonText,
           ]}
         >
           등록하기
         </Text>
+
       </Pressable>
 
-    
-      <CategorySelectModal
-        visible={showCategoryModal}
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onClose={() => setShowCategoryModal(false)}
-        onSelect={(category) => {
-          setSelectedCategory(category);
-          setShowCategoryModal(false);
-        }}
-        onDelete={handleDeleteCategory}
-        onAdd={() => {
-          setShowCategoryModal(false);
-          router.push("/list/manage");
-        }}
-      />
+      {/* =================================================
+          1. 카테고리 선택 모달
+      ================================================= */}
 
-    
+      <Modal
+        visible={showCategoryModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() =>
+          setShowCategoryModal(false)
+        }
+      >
+
+        <View
+          style={styles.categoryModalOverlay}
+        >
+
+          <View
+            style={styles.categoryModal}
+          >
+
+            
+
+            <Text
+              style={
+                styles.categoryModalTitle
+              }
+            >
+              카테고리 선택
+            </Text>
+
+           
+            <ScrollView
+              style={
+                styles.categoryList
+              }
+              showsVerticalScrollIndicator={
+                false
+              }
+            >
+
+              {categories.map(
+                (category) => (
+                  <View
+                    key={category}
+                    style={
+                      styles.categoryRow
+                    }
+                  >
+
+                    <Pressable
+                      style={
+                        styles.categoryItem
+                      }
+                      onPress={() => {
+                        setSelectedCategory(
+                          category
+                        );
+
+                        setShowCategoryModal(
+                          false
+                        );
+                      }}
+                    >
+
+                      <Text
+                        style={
+                          styles.categoryItemText
+                        }
+                      >
+                        {category}
+                      </Text>
+
+                    </Pressable>
+
+                    <Pressable
+                      style={
+                        styles.categoryDeleteButton
+                      }
+                      onPress={() =>
+                        handleDeleteCategory(
+                          category
+                        )
+                      }
+                    >
+
+                      <Ionicons
+                        name="close"
+                        size={24}
+                        color="#FFFFFF"
+                      />
+
+                    </Pressable>
+
+                  </View>
+                )
+              )}
+
+            </ScrollView>
+
+            {/* =========================
+                카테고리 추가
+            ========================= */}
+
+            <Pressable
+              style={
+                styles.addCategoryButton
+              }
+              onPress={
+                handleOpenCategoryAddModal
+              }
+            >
+
+              <Text
+                style={
+                  styles.addCategoryText
+                }
+              >
+                ＋ 카테고리 추가
+              </Text>
+
+            </Pressable>
+
+          
+
+            <Pressable
+              style={
+                styles.closeCategoryButton
+              }
+              onPress={() =>
+                setShowCategoryModal(false)
+              }
+            >
+
+              <Text
+                style={
+                  styles.closeCategoryText
+                }
+              >
+                닫기
+              </Text>
+
+            </Pressable>
+
+          </View>
+
+        </View>
+
+      </Modal>
+
+      {/* =================================================
+          2. 카테고리 추가 모달
+      ================================================= */}
+
+      <Modal
+        visible={showCategoryAddModal}
+        transparent
+        animationType="fade"
+        onRequestClose={
+          handleCloseCategoryAddModal
+        }
+      >
+
+        <View
+          style={styles.categoryAddOverlay}
+        >
+
+          <View
+            style={styles.categoryAddModal}
+          >
+
+           
+
+            <Text
+              style={
+                styles.categoryAddTitle
+              }
+            >
+              카테고리 추가
+            </Text>
+
+            
+
+            <TextInput
+              style={
+                styles.categoryAddInput
+              }
+              value={newCategoryName}
+              onChangeText={
+                setNewCategoryName
+              }
+              maxLength={15}
+              placeholder="카테고리명을 입력하세요"
+              placeholderTextColor="#CFCFCF"
+              autoFocus
+            />
+
+           
+
+            <View
+              style={
+                styles.categoryAddActions
+              }
+            >
+
+              <Pressable
+                style={
+                  styles.categoryAddCancelButton
+                }
+                onPress={
+                  handleCloseCategoryAddModal
+                }
+              >
+
+                <Text
+                  style={
+                    styles.categoryAddCancelText
+                  }
+                >
+                  취소
+                </Text>
+
+              </Pressable>
+
+              <Pressable
+                style={[
+                  styles.categoryAddConfirmButton,
+                  newCategoryName.trim() ===
+                    "" &&
+                    styles.categoryAddDisabled,
+                ]}
+                disabled={
+                  newCategoryName.trim() ===
+                  ""
+                }
+                onPress={
+                  handleAddCategory
+                }
+              >
+
+                <Text
+                  style={[
+                    styles.categoryAddConfirmText,
+                    newCategoryName.trim() === "" &&
+                      styles.categoryAddDisabledText,
+                  ]}
+                >
+                  추가
+                </Text>
+
+              </Pressable>
+
+            </View>
+
+          </View>
+
+        </View>
+
+      </Modal>
+
+      {/* =========================
+          반복 모달
+      ========================= */}
+
       <RepeatModal
         visible={showRepeatModal}
         selected={repeat}
-        onClose={() => setShowRepeatModal(false)}
+        onClose={() =>
+          setShowRepeatModal(false)
+        }
         onSelect={(value) => {
           setRepeat(value);
 
@@ -348,9 +656,15 @@ export default function CreateList() {
         }}
       />
 
+      {/* =========================
+          취소 모달
+      ========================= */}
+
       <CancelModal
         visible={showCancelModal}
-        onContinue={() => setShowCancelModal(false)}
+        onContinue={() =>
+          setShowCancelModal(false)
+        }
         onCancel={() => {
           setShowCancelModal(false);
           router.replace("/list");
@@ -391,10 +705,31 @@ const styles = StyleSheet.create({
     paddingBottom: 180,
   },
 
+  listNameSection: {
+    marginBottom: 18,
+  },
+
+  inputContainer: {
+    height: 55,
+    backgroundColor: "#7C8792",
+    borderRadius: 28,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+
+  inputLabel: {
+    color: "#FFFFFF",
+  },
+
   input: {
     flex: 1,
-    marginLeft: 20, 
+    marginLeft: 20,
     color: "#FFFFFF",
+  },
+
+  inputRight: {
+    textAlign: "right",
   },
 
   countText: {
@@ -402,16 +737,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: "right",
     marginTop: 6,
-  },
-
-  selectBox: {
-    height: 55,
-    backgroundColor: "#7C8792",
-    borderRadius: 28,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
 
   selectText: {
@@ -422,6 +747,10 @@ const styles = StyleSheet.create({
 
   placeholder: {
     color: "#CFCFCF",
+  },
+
+  sectionSpacing: {
+    marginTop: 18,
   },
 
   createButton: {
@@ -450,75 +779,175 @@ const styles = StyleSheet.create({
     color: "#A5A5A5",
   },
 
-
-  divider: {
-    height: 1,
-    backgroundColor: "#415366",
-    marginVertical: 20,
-  },
-
-  section: {
-    marginBottom: 22,
-  },
-
-  required: {
-    color: "#FF8C8C",
-  },
-
-  row: {
-    flexDirection: "row",
+  categoryModalOverlay: {
+    flex: 1,
+    backgroundColor:
+      "rgba(0, 0, 0, 0.55)",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-between",
+    paddingHorizontal: 28,
   },
 
-  optionButton: {
-    height: 55,
-    backgroundColor: "#7C8792",
-    borderRadius: 28,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  optionText: {
-    color: "#FFFFFF",
-  },
-
-  placeholderText: {
-    color: "#CFCFCF",
-  },
-
-  buttonContainer: {
-    paddingHorizontal: 24,
+  categoryModal: {
+    width: "100%",
+    maxHeight: "85%",
+    backgroundColor: "#102B47",
+    borderRadius: 24,
+    paddingHorizontal: 30,
+    paddingTop: 30,
     paddingBottom: 30,
-    marginTop: 10,
   },
 
-  inputRight: {
-    textAlign: "right",
+  categoryModalTitle: {
+    color: "#FFFFFF",
+    fontSize: 22,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 26,
   },
 
-  inputContainer: {
-  height: 55,
-  backgroundColor: "#7C8792",
-  borderRadius: 28,
-  flexDirection: "row",
-  alignItems: "center",
-  paddingHorizontal: 20,
-  
-},
+  categoryList: {
+    maxHeight: 250,
+  },
 
-inputLabel: {
-  color: "#FFFFFF",
-  
-},
+  categoryRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 18,
+  },
 
-sectionSpacing: {
-  marginTop: 18,
-},
+  categoryItem: {
+    flex: 1,
+    height: 55,
+    borderRadius: 28,
+    backgroundColor: "#7C8792",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
 
+<<<<<<< HEAD
 listNameSection: {
   marginBottom: 18,
 },
 });
+=======
+  categoryItemText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+  },
+
+  categoryDeleteButton: {
+    width: 42,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 8,
+  },
+
+  addCategoryButton: {
+    height: 62,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 4,
+    marginBottom: 16,
+  },
+
+  addCategoryText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+
+  closeCategoryButton: {
+    height: 55,
+    borderRadius: 28,
+    backgroundColor: "#7C8792",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  closeCategoryText: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    fontWeight: "700",
+  },
+
+  categoryAddOverlay: {
+    flex: 1,
+    backgroundColor:
+      "rgba(0, 0, 0, 0.55)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+
+  categoryAddModal: {
+    width: "100%",
+    backgroundColor: "#102B47",
+    borderRadius: 24,
+    paddingHorizontal: 28,
+    paddingVertical: 30,
+  },
+
+  categoryAddTitle: {
+    color: "#FFFFFF",
+    fontSize: 21,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 26,
+  },
+
+  categoryAddInput: {
+    height: 55,
+    borderRadius: 28,
+    backgroundColor: "#7C8792",
+    color: "#FFFFFF",
+    paddingHorizontal: 20,
+    fontSize: 15,
+  },
+
+  categoryAddActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  categoryAddCancelButton: {
+    height: 45,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  categoryAddCancelText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+
+  categoryAddConfirmButton: {
+    height: 45,
+    minWidth: 70,
+    borderRadius: 23,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+
+  categoryAddDisabled: {
+    backgroundColor: "#D9D9D9",
+  },
+
+  categoryAddDisabledText: {
+    color: "#AFAFAF",
+  },
+
+  categoryAddConfirmText: {
+    color: "#10243A",
+    fontSize: 15,
+    fontWeight: "700",
+  },
+});
+}
+>>>>>>> 4a9915e (feat: 캘린더 탭 수정중)
