@@ -1,12 +1,5 @@
 {
-  "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "build": "expo export -p web",
-    "build:web": "expo export -p web",
-    "lint": "expo lint"
-  }
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "framework": null
 }
