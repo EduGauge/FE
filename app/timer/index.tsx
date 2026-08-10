@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
   useEffect,
@@ -7,6 +6,7 @@ import {
   useState,
 } from "react";
 import {
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -15,14 +15,12 @@ import {
 } from "react-native";
 
 import ListCard from "../../components/list/ListCard";
-import { useModal } from "../../components/ModalProvider";
+import Header from "../../components/Header";
 import { useTodos } from "../../context/TodoContext";
 import { useCategories } from "../../context/CategoryContext";
 
 export default function TimerScreen() {
   const { categories } = useCategories();
-  const { openProfile, openNotification } =
-    useModal();
 
   const {
     todos,
@@ -80,6 +78,15 @@ export default function TimerScreen() {
     totalCount === 0
       ? 0
       : (checkedCount / totalCount) * 100;
+
+  const progressCharacterSource =
+    progress < 25
+      ? require("../../assets/characters/progress1.png")
+      : progress < 50
+        ? require("../../assets/characters/progress2.png")
+        : progress < 75
+          ? require("../../assets/characters/progress3.png")
+          : require("../../assets/characters/progress4.png");
 
   // -------------------------
   // 시간 표시
@@ -206,52 +213,7 @@ export default function TimerScreen() {
 
   return (
     <View style={styles.container}>
-
-      {/* =========================
-          HEADER
-      ========================= */}
-
-      <View style={styles.header}>
-
-        <Text style={styles.logo}>
-          edu
-          <Text style={styles.logoGauge}>
-            gauge
-          </Text>
-        </Text>
-
-        <View
-          style={styles.headerRight}
-        >
-
-          <Pressable
-            onPress={() =>
-              openProfile()
-            }
-          >
-            <Ionicons
-              name="person-circle"
-              size={28}
-              color="#FFFFFF"
-            />
-          </Pressable>
-
-          <Pressable
-            style={styles.menuButton}
-            onPress={() =>
-              openNotification()
-            }
-          >
-            <Ionicons
-              name="ellipsis-vertical"
-              size={24}
-              color="#FFFFFF"
-            />
-          </Pressable>
-
-        </View>
-
-      </View>
+      <Header variant="logo" />
 
       {/* =========================
           TIMER
@@ -282,20 +244,20 @@ export default function TimerScreen() {
           false
         }
       >
-
         {categories.map(
           (category) => (
-
             <ListCard
               key={category.id}
               category={category.name}
-              todos={groupedTodos[category.id] ?? []}
+              todos={
+                groupedTodos[
+                  category.id
+                ] ?? []
+              }
               onCheck={handleCheck}
             />
-
           )
         )}
-
       </ScrollView>
 
       {/* =========================
@@ -306,58 +268,46 @@ export default function TimerScreen() {
         style={styles.bottomArea}
       >
 
-        {/* 안내 문구 */}
+        {/* 일시정지 버튼 */}
 
-        <View
-          style={styles.timerGuide}
-        >
-          <Ionicons
-            name="information-circle-outline"
-            size={13}
-            color="#FFFFFF"
-          />
-
-          <Text
-            style={
-              styles.timerGuideText
-            }
-          >
-            3초 이상 누르면 타이머가
-            종료됩니다.
-          </Text>
-        </View>
-
-        {/* 타이머 버튼 */}
+        <View pointerEvents="none" style={styles.pauseLine} />
 
         <Pressable
           style={styles.timerButton}
-          onLongPress={handleStop}
-          delayLongPress={3000}
+          onPress={handleStop}
         >
-          <Ionicons
-            name="pause"
-            size={38}
-            color="#10243A"
+          <Image
+            source={require("../../assets/icons/stop.png")}
+            style={styles.stopIcon}
+            resizeMode="contain"
           />
         </Pressable>
 
         {/* 게이지 */}
 
-        <View
-          style={
-            styles.progressBackground
-          }
-        >
-          <View
+        <View style={styles.progressTrackContainer}>
+          <View style={styles.progressBackground}>
+            <View
+              style={[
+                styles.progressBar,
+                {
+                  width: `${progress}%`,
+                },
+              ]}
+            />
+          </View>
+
+          <Image
+            source={progressCharacterSource}
             style={[
-              styles.progressBar,
+              styles.progressCharacter,
               {
-                width: `${progress}%`,
+                left: `${Math.max(8, Math.min(progress, 92))}%`,
               },
             ]}
+            resizeMode="contain"
           />
         </View>
-
       </View>
 
       {/* =========================
@@ -370,11 +320,9 @@ export default function TimerScreen() {
             styles.modalOverlay
           }
         >
-
           <View
             style={styles.finishModal}
           >
-
             <Text
               style={
                 styles.finishDescription
@@ -390,7 +338,6 @@ export default function TimerScreen() {
                 styles.modalButtons
               }
             >
-
               {/* 취소 */}
 
               <Pressable
@@ -440,80 +387,32 @@ export default function TimerScreen() {
                   확인
                 </Text>
               </Pressable>
-
             </View>
-
           </View>
-
         </View>
       )}
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  // =========================
-  // 전체
-  // =========================
-
   container: {
     flex: 1,
     backgroundColor: "#10243A",
   },
 
-  // =========================
-  // Header
-  // =========================
-
-  header: {
-    height: 82,
-    marginHorizontal: 22,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent:
-      "space-between",
-  },
-
-  logo: {
-    color: "#F6D64A",
-    fontSize: 15,
-    fontWeight: "800",
-  },
-
-  logoGauge: {
-    color: "#4D8EAD",
-    fontWeight: "600",
-  },
-
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  menuButton: {
-    marginLeft: 12,
-  },
-
-  // =========================
-  // Timer
-  // =========================
-
   timerSection: {
     alignItems: "center",
-    marginBottom: 8,
+    marginTop: 40,
+    marginBottom: 40,
   },
 
   timerText: {
-    color: "#FFFFFF",
-    fontSize: 28,
+    color: "#E3C943",
+    fontSize: 64,
     fontWeight: "700",
     letterSpacing: 1,
   },
-
-  // =========================
-  // List
-  // =========================
 
   scroll: {
     flex: 1,
@@ -524,77 +423,70 @@ const styles = StyleSheet.create({
     paddingBottom: 220,
   },
 
-  // =========================
-  // Bottom
-  // =========================
-
   bottomArea: {
     position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
+    height: 150,
     paddingHorizontal: 24,
-    paddingBottom: 22,
-    paddingTop: 8,
+    paddingBottom: 24,
     backgroundColor: "#10243A",
+    justifyContent: "flex-end",
   },
-
-  // =========================
-  // 안내 문구
-  // =========================
-
-  timerGuide: {
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#5B6875",
-    borderRadius: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginBottom: 24,
-  },
-
-  timerGuideText: {
-    color: "#FFFFFF",
-    fontSize: 9,
-    marginLeft: 4,
-  },
-
-  // =========================
-  // 타이머 버튼
-  // =========================
 
   timerButton: {
-    alignSelf: "center",
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "#F6D64A",
+    position: "absolute",
+    top: -55,
+    left: "50%",
+    width: 110,
+    height: 110,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 28,
+    transform: [{ translateX: -55 }],
+    zIndex: 2,
   },
 
-  // =========================
-  // 게이지
-  // =========================
+  pauseLine: {
+    position: "absolute",
+    top: -3,
+    left: 0,
+    right: 0,
+    height: 6,
+    backgroundColor: "#3E4935",
+  },
+
+  stopIcon: {
+    width: 100,
+    height: 100,
+  },
 
   progressBackground: {
-    height: 12,
-    backgroundColor: "#46533E",
-    borderRadius: 8,
+    height: 20,
+    backgroundColor: "#3E4935",
+    borderRadius: 10,
     overflow: "hidden",
+  },
+
+  progressTrackContainer: {
+    height: 70,
+    justifyContent: "center",
+  },
+
+  progressCharacter: {
+    position: "absolute",
+    top: -4,
+    width: 50,
+    height: 72,
+    transform: [{ translateX: -36 }],
+    zIndex: 2,
   },
 
   progressBar: {
     height: "100%",
-    backgroundColor: "#F6D64A",
-    borderRadius: 8,
+    backgroundColor: "#E3C943",
+    borderRadius: 10,
   },
-
-  // =========================
-  // 완료 모달
-  // =========================
 
   modalOverlay: {
     position: "absolute",
@@ -609,18 +501,20 @@ const styles = StyleSheet.create({
   },
 
   finishModal: {
-    width: "80%",
+    width: "90%",
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     paddingHorizontal: 24,
-    paddingVertical: 28,
+    paddingVertical: 24,
     alignItems: "center",
   },
 
   finishDescription: {
     color: "#10243A",
     textAlign: "center",
-    marginBottom: 24,
+    marginBottom: 12,
+    fontSize: 13,
+    fontWeight: "500",
   },
 
   modalButtons: {
@@ -638,6 +532,6 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: "#10243A",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "500",
   },
 });
