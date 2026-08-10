@@ -14,7 +14,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
 
         headerStyle: {
           backgroundColor: "#071F30",
@@ -103,7 +103,7 @@ export default function TabLayout() {
       
 
       <Tabs.Screen
-        name="calendar"
+        name="calendar/index"
         options={{
           title: "달력",
           tabBarLabel: "달력",
