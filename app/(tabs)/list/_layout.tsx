@@ -13,9 +13,16 @@ export default function ListLayout() {
       />
 
       <Stack.Screen
-        name="addList"
+        name="addCategory"
         options={{
-          header: () => <Header title="리스트" />,
+          header: () => <Header title="카테고리" />,
+        }}
+      />
+
+      <Stack.Screen
+        name="manage"
+        options={{
+          header: () => <Header title="리스트 관리" />,
         }}
       />
     </Stack>

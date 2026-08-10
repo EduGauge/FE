@@ -3,8 +3,10 @@ import { router } from "expo-router";
 import EmptyListView from "../../../components/list/EmptyListView";
 import ListView from "../../../components/list/ListView";
 import { useTodos } from "../../../context/TodoContext";
+import { useCategories } from "../../../context/CategoryContext";
 
 export default function ListScreen() {
+  const { categories } = useCategories();
   const {
     todos,
     updateTodo,
@@ -25,13 +27,15 @@ export default function ListScreen() {
     router.push("/timer");
   };
 
-  if (todos.length > 0) {
+  if (categories.length > 0) {
     return (
       <ListView
         todos={todos}
+        categories={categories}
         elapsedSeconds={elapsedSeconds}
         onToggleTodo={handleToggleTodo}
         onStartTimer={handleStartTimer}
+        onManageList={() => router.push("/list/manage")}
       />
     );
   }
@@ -39,7 +43,7 @@ export default function ListScreen() {
   return (
     <EmptyListView
       elapsedSeconds={elapsedSeconds}
-      onAddList={() => router.push("/list/addList")}
+      onAddCategory={() => router.push("/list/addCategory")}
     />
   );
 }

@@ -10,10 +10,12 @@ import {
 } from "react-native";
 
 import { Todo } from "../../context/TodoContext";
-import ListCard from "../ListCard";
+import { Category } from "../../context/CategoryContext";
+import ListCard from "./ListCard";
 
 type ListViewProps = {
   todos: Todo[];
+  categories: Category[];
   elapsedSeconds: number;
   onToggleTodo: (id: string) => void;
   onStartTimer: () => void;
@@ -31,6 +33,7 @@ function formatTime(seconds: number) {
 
 export default function ListView({
   todos,
+  categories,
   elapsedSeconds,
   onToggleTodo,
   onStartTimer,
@@ -38,14 +41,13 @@ export default function ListView({
 }: ListViewProps) {
   const groupedTodos = useMemo(
     () =>
-      todos.reduce<Record<string, Todo[]>>(
-        (groups, todo) => {
-          (groups[todo.category] ??= []).push(todo);
-          return groups;
-        },
-        {}
+      Object.fromEntries(
+        categories.map((category) => [
+          category.id,
+          todos.filter((todo) => todo.categoryId === category.id),
+        ])
       ),
-    [todos]
+    [categories, todos]
   );
 
   const completedCount = todos.filter(
@@ -53,7 +55,9 @@ export default function ListView({
   ).length;
 
   const progress =
-    (completedCount / todos.length) * 100;
+    todos.length === 0
+      ? 0
+      : (completedCount / todos.length) * 100;
 
   return (
     <ScrollView
@@ -115,12 +119,12 @@ export default function ListView({
 
       {/* 리스트 카드 */}
       <View style={styles.cards}>
-        {Object.entries(groupedTodos).map(
-          ([category, categoryTodos]) => (
+        {categories.map(
+          (category) => (
             <ListCard
-              key={category}
-              category={category}
-              todos={categoryTodos}
+              key={category.id}
+              category={category.name}
+              todos={groupedTodos[category.id] ?? []}
               onCheck={onToggleTodo}
             />
           )

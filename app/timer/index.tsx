@@ -14,11 +14,13 @@ import {
   View,
 } from "react-native";
 
-import ListCard from "../../components/ListCard";
+import ListCard from "../../components/list/ListCard";
 import { useModal } from "../../components/ModalProvider";
 import { useTodos } from "../../context/TodoContext";
+import { useCategories } from "../../context/CategoryContext";
 
 export default function TimerScreen() {
+  const { categories } = useCategories();
   const { openProfile, openNotification } =
     useModal();
 
@@ -52,11 +54,11 @@ export default function TimerScreen() {
   const groupedTodos = useMemo(() => {
     return todos.reduce(
       (acc, todo) => {
-        if (!acc[todo.category]) {
-          acc[todo.category] = [];
+        if (!acc[todo.categoryId]) {
+          acc[todo.categoryId] = [];
         }
 
-        acc[todo.category].push(todo);
+        acc[todo.categoryId].push(todo);
 
         return acc;
       },
@@ -281,15 +283,13 @@ export default function TimerScreen() {
         }
       >
 
-        {Object.entries(
-          groupedTodos
-        ).map(
-          ([category, items]) => (
+        {categories.map(
+          (category) => (
 
             <ListCard
-              key={category}
-              category={category}
-              todos={items}
+              key={category.id}
+              category={category.name}
+              todos={groupedTodos[category.id] ?? []}
               onCheck={handleCheck}
             />
 

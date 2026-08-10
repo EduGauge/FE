@@ -8,7 +8,7 @@ import {
 
 type EmptyListViewProps = {
   elapsedSeconds: number;
-  onAddList?: () => void;
+  onAddCategory?: () => void;
 };
 
 function formatTime(seconds: number) {
@@ -22,7 +22,7 @@ function formatTime(seconds: number) {
 
 export default function EmptyListView({
   elapsedSeconds,
-  onAddList,
+  onAddCategory,
 }: EmptyListViewProps) {
   return (
     <View style={styles.container}>
@@ -41,8 +41,8 @@ export default function EmptyListView({
         <Text style={styles.listTitle}>리스트</Text>
 
         <Pressable
-          disabled={!onAddList}
-          onPress={onAddList}
+          disabled={!onAddCategory}
+          onPress={onAddCategory}
           style={styles.addButton}
           hitSlop={8}
         >

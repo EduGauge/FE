@@ -13,9 +13,11 @@ import {
 } from "react-native";
 
 import { useTodos } from "../../context/TodoContext";
+import { useCategories } from "../../context/CategoryContext";
 import { useModal } from "../../components/ModalProvider";
 
 export default function TimerStopScreen() {
+  const { categories } = useCategories();
   const { openProfile, openNotification } =
     useModal();
 
@@ -43,11 +45,11 @@ export default function TimerStopScreen() {
   const groupedTodos = useMemo(() => {
     return todos.reduce(
       (acc, todo) => {
-        if (!acc[todo.category]) {
-          acc[todo.category] = [];
+        if (!acc[todo.categoryId]) {
+          acc[todo.categoryId] = [];
         }
 
-        acc[todo.category].push(todo);
+        acc[todo.categoryId].push(todo);
 
         return acc;
       },
@@ -149,11 +151,11 @@ export default function TimerStopScreen() {
         showsVerticalScrollIndicator={false}
       >
 
-        {Object.entries(groupedTodos).map(
-          ([category, items]) => (
+        {categories.map(
+          (category) => (
 
             <View
-              key={category}
+              key={category.id}
               style={styles.categoryCard}
             >
 
@@ -163,7 +165,7 @@ export default function TimerStopScreen() {
                 <Text
                   style={styles.categoryText}
                 >
-                  {category}
+                  {category.name}
                 </Text>
               </View>
 
@@ -171,7 +173,7 @@ export default function TimerStopScreen() {
                 style={styles.todoContainer}
               >
 
-                {items.map((todo) => (
+                {(groupedTodos[category.id] ?? []).map((todo) => (
 
                   <View
                     key={todo.id}
