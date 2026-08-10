@@ -153,7 +153,11 @@ export default function TimerScreen() {
     return () => {
       clearInterval(interval);
     };
-  }, [isTimerRunning]);
+  }, [
+    isTimerRunning,
+    elapsedSeconds,
+    setElapsedSeconds,
+  ]);
 
   // -------------------------
   // 리스트 체크
@@ -198,6 +202,7 @@ export default function TimerScreen() {
   }, [
     checkedCount,
     totalCount,
+    setIsTimerRunning,
   ]);
 
   // -------------------------
