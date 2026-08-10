@@ -1,91 +1,127 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function Login() {
   return (
     <View style={styles.container}>
-
-      {/* Header */}
       <View style={styles.header}>
         <Pressable
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => router.replace("/(auth)")}
+          hitSlop={10}
         >
-        <Ionicons
-          name="chevron-back"
-          size={28}
-          color="white"
-/>
+          <Ionicons
+            name="chevron-back"
+            size={28}
+            color="#FFFFFF"
+          />
         </Pressable>
 
-        <Text style={styles.headerTitle}>로그인</Text>
+        <Text style={styles.headerTitle}>
+          로그인
+        </Text>
       </View>
 
-      {/* Character */}
-      <View style={styles.character} />
+      <View style={styles.content}>
+        <Image
+          source={require("../../assets/characters/emoji_intro_2.png")}
+          style={styles.character}
+          resizeMode="contain"
+        />
 
-      {/* Logo */}
-      <Text style={styles.logo}>LOGO</Text>
+        <Image
+          source={require("../../assets/logos/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
 
-      
       <View style={styles.buttonContainer}>
-
         <Pressable
           style={styles.button}
-          onPress={() => router.push("/(auth)/email")}
+          onPress={() =>
+            router.push("/(auth)/email")
+          }
         >
-          <Ionicons
-            name="mail-outline"
-            size={22}
-            color="#10243A"
-            style={styles.buttonIcon}
-  />
+          <View style={styles.buttonContent}>
+            <View style={styles.emailIcon}>
+              <Ionicons
+                name="mail-outline"
+                size={19}
+                color="#10243A"
+              />
+            </View>
 
-          <Text style={styles.buttonText}>이메일로 로그인</Text>
+            <Text style={styles.buttonText}>
+              이메일로 로그인
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
           style={styles.button}
-          onPress={() => console.log("Google Login")}
+          onPress={() =>
+            console.log("Google Login")
+          }
         >
-          <Ionicons
-            name="logo-google"
-            size={22}
-            color="#10243A"
-            style={styles.buttonIcon}
-  />
-          <Text style={styles.buttonText}>구글로 로그인</Text>
+          <View style={styles.buttonContent}>
+            <Image
+              source={require("../../assets/logos/logo_google.png")}
+              style={styles.socialLogo}
+              resizeMode="contain"
+            />
+
+            <Text style={styles.buttonText}>
+              구글로 로그인
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
           style={styles.button}
-          onPress={() => console.log("Kakao Login")}
+          onPress={() =>
+            console.log("Kakao Login")
+          }
         >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={22}
-            color="#10243A"
-            style={styles.buttonIcon}
-  />
-          <Text style={styles.buttonText}>카카오톡으로 로그인</Text>
+          <View style={styles.buttonContent}>
+            <Image
+              source={require("../../assets/logos/logo_kakao.png")}
+              style={styles.socialLogo}
+              resizeMode="contain"
+            />
+
+            <Text style={styles.buttonText}>
+              카카오톡으로 로그인
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
           style={styles.button}
-          onPress={() => console.log("Naver Login")}
+          onPress={() =>
+            console.log("Naver Login")
+          }
         >
-          <Ionicons
-            name="globe-outline"
-            size={22}
-            color="#10243A"
-            style={styles.buttonIcon}
-  />
-          <Text style={styles.buttonText}>네이버로 로그인</Text>
-        </Pressable>
+          <View style={styles.buttonContent}>
+            <Image
+              source={require("../../assets/logos/logo_naver.png")}
+              style={styles.socialLogo}
+              resizeMode="contain"
+            />
 
+            <Text style={styles.buttonText}>
+              네이버로 로그인
+            </Text>
+          </View>
+        </Pressable>
       </View>
-
     </View>
   );
 }
@@ -93,7 +129,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#10243A",
+    backgroundColor: "#071F30",
   },
 
   header: {
@@ -104,68 +140,70 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    left: 20,
-    bottom: 20,
-  },
-
-  backText: {
-    color: "#FFFFFF",
-    fontSize: 24,
+    left: 17,
+    bottom: 18,
   },
 
   headerTitle: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "600",
+  },
+
+  content: {
+    alignItems: "center",
+    marginTop: 80,
   },
 
   character: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    backgroundColor: "#D9D9D9",
-    alignSelf: "center",
-    marginTop: 40,
+    width: 110,
+    height: 110,
   },
 
   logo: {
-    color: "#FFFFFF",
-    fontSize: 34,
-    fontWeight: "bold",
-    alignSelf: "center",
-    marginTop: 30,
-    marginBottom: 70,
+    width: 145,
+    height: 45,
+    marginTop: 10,
   },
 
   buttonContainer: {
-    alignItems: "center",
+    position: "absolute",
+    left: 18,
+    right: 18,
+    bottom: 32,
   },
 
   button: {
-    width: 330,
-    height: 58,
-    borderRadius: 30,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
-    alignItems: "center",
-
-    marginBottom: 18,
+    marginBottom: 10,
   },
 
-  icon: {
-    fontSize: 22,
-    marginRight: 14,
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   buttonText: {
-    fontSize: 16,
-    fontWeight: "600",
     color: "#10243A",
+    fontSize: 13,
+    fontWeight: "600",
   },
 
-  buttonIcon: {
-  position: "absolute",
-  left: 28,
-},
+  emailIcon: {
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  socialLogo: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
 });
