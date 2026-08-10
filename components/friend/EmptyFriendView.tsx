@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   description: {
     marginLeft: 5,
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: 8,
     fontWeight: "400",
   },
 

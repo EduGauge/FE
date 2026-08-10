@@ -132,6 +132,7 @@ export default function TabLayout() {
         options={{
           title: "리스트",
           tabBarLabel: "리스트",
+          headerShown: false,
 
           tabBarIcon: ({
             color,
