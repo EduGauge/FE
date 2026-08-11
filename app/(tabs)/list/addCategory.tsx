@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -135,7 +136,11 @@ export default function AddCategoryScreen() {
 
         {showDatePicker ? (
           <View style={styles.datePickerContainer}>
-            <Text style={styles.calendarPlaceholder}>캘린더 구현 예정</Text>
+            <Image
+              source={require("../../../assets/images/calendar.png")}
+              style={styles.calendarImage}
+              resizeMode="cover"
+            />
           </View>
         ) : null}
 
@@ -211,14 +216,16 @@ const styles = StyleSheet.create({
   optionText: { color: "#071F30", fontSize: 13, fontWeight: "500" },
   datePickerContainer: {
     borderRadius: 10,
-    backgroundColor: "#5B6875",
+    backgroundColor: "#73818E",
     overflow: "hidden",
-    padding: 8,
-    minHeight: 120,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "flex-start",
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
+    minHeight: 245,
   },
-  calendarPlaceholder: { color: "#FFFFFF", fontSize: 16, fontWeight: "600" },
+  calendarImage: { width: "100%", height: 210 },
   actions: { marginTop: "auto", alignItems: "center", gap: 28 },
   submitText: { color: "#E3C943", fontSize: 13, fontWeight: "600" },
   cancelText: { color: "#FFFFFF", fontSize: 13, fontWeight: "600" },

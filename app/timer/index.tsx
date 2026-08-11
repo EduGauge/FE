@@ -512,19 +512,19 @@ const styles = StyleSheet.create({
   },
 
   finishModal: {
-    width: "90%",
-    height: 180,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    paddingHorizontal: 24,
-    paddingVertical: 50,
-    alignItems: "center",
-  },
+  width: "90%",
+  backgroundColor: "#FFFFFF",
+  borderRadius: 20,
+  paddingHorizontal: 24,
+  paddingTop: 24,
+  paddingBottom: 16,
+  alignItems: "center",
+},
 
   finishDescription: {
     color: "#10243A",
     textAlign: "center",
-    marginBottom: 12,
+    marginBottom: 8,
     fontSize: 13,
     fontWeight: "500",
   },
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
   modalButton: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: 40,
+    paddingVertical: 10,
   },
 
   modalButtonText: {
