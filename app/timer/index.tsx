@@ -277,16 +277,18 @@ export default function TimerScreen() {
 
         <View pointerEvents="none" style={styles.pauseLine} />
 
-        <Pressable
-          style={styles.timerButton}
-          onPress={handleStop}
-        >
-          <Image
-            source={require("../../assets/icons/stop.png")}
-            style={styles.stopIcon}
-            resizeMode="contain"
-          />
-        </Pressable>
+        <View style={styles.timerButtonContainer}>
+          <Pressable
+            style={styles.timerButton}
+            onPress={handleStop}
+          >
+            <Image
+              source={require("../../assets/icons/stop.png")}
+              style={styles.stopIcon}
+              resizeMode="contain"
+            />
+          </Pressable>
+        </View>
 
         {/* 게이지 */}
 
@@ -307,7 +309,8 @@ export default function TimerScreen() {
             style={[
               styles.progressCharacter,
               {
-                left: `${Math.max(8, Math.min(progress, 92))}%`,
+                left: `${progress}%`,
+                transform: [{ translateX: -(progress / 100) * 50 }],
               },
             ]}
             resizeMode="contain"
@@ -440,16 +443,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 
-  timerButton: {
+  timerButtonContainer: {
     position: "absolute",
     top: -55,
-    left: "50%",
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 2,
+  },
+
+  timerButton: {
     width: 110,
     height: 110,
     justifyContent: "center",
     alignItems: "center",
-    transform: [{ translateX: -55 }],
-    zIndex: 2,
   },
 
   pauseLine: {
@@ -483,7 +490,6 @@ const styles = StyleSheet.create({
     top: -4,
     width: 50,
     height: 72,
-    transform: [{ translateX: -36 }],
     zIndex: 2,
   },
 
@@ -507,10 +513,11 @@ const styles = StyleSheet.create({
 
   finishModal: {
     width: "90%",
+    height: 180,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     paddingHorizontal: 24,
-    paddingVertical: 24,
+    paddingVertical: 50,
     alignItems: "center",
   },
 
@@ -531,7 +538,7 @@ const styles = StyleSheet.create({
   modalButton: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 40,
   },
 
   modalButtonText: {

@@ -1,4 +1,3 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import {
@@ -35,17 +34,11 @@ export default function AddCategoryScreen() {
   const [showRepeatOptions, setShowRepeatOptions] = useState(false);
   const [showRepeatEndOptions, setShowRepeatEndOptions] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [endDate, setEndDate] = useState(new Date());
 
   const isComplete =
     name.trim().length > 0 &&
     repeat.trim().length > 0 &&
     repeatEnd.trim().length > 0;
-  const formatDate = (date: Date) =>
-    `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}.${String(
-      date.getDate()
-    ).padStart(2, "0")}.`;
-
   const handleSubmit = () => {
     if (!isComplete) return;
 
@@ -142,19 +135,7 @@ export default function AddCategoryScreen() {
 
         {showDatePicker ? (
           <View style={styles.datePickerContainer}>
-            <DateTimePicker
-              value={endDate}
-              mode="date"
-              minimumDate={new Date()}
-              display={Platform.OS === "ios" ? "inline" : "default"}
-              onChange={(_, date) => {
-                if (Platform.OS === "android") setShowDatePicker(false);
-                if (date) {
-                  setEndDate(date);
-                  setRepeatEnd(formatDate(date));
-                }
-              }}
-            />
+            <Text style={styles.calendarPlaceholder}>캘린더 구현 예정</Text>
           </View>
         ) : null}
 
@@ -233,7 +214,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#5B6875",
     overflow: "hidden",
     padding: 8,
+    minHeight: 120,
+    justifyContent: "center",
+    alignItems: "center",
   },
+  calendarPlaceholder: { color: "#FFFFFF", fontSize: 16, fontWeight: "600" },
   actions: { marginTop: "auto", alignItems: "center", gap: 28 },
   submitText: { color: "#E3C943", fontSize: 13, fontWeight: "600" },
   cancelText: { color: "#FFFFFF", fontSize: 13, fontWeight: "600" },
