@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -12,30 +13,25 @@ import {
 export default function SignupEmail() {
   const [email, setEmail] = useState("");
 
-  // 나중에 API 연결 시 사용할 에러 상태
-  const [errorMessage, setErrorMessage] = useState("");
-
   const isValid = email.trim() !== "";
 
-  const handleNext = () => {
-    // TODO : 이메일 중복 검사 API
+  const handleComplete = () => {
+    if (!isValid) {
+      return;
+    }
 
-    router.push("/(auth)/signup-account");
+    // TODO(API): 이메일 중복 검사
 
-    /*
-    setErrorMessage(
-      "이미 존재하는 이메일입니다. '이메일로 로그인'을 해주세요."
-    );
-    */
+    router.replace("/(auth)/signup-account");
   };
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Pressable
           style={styles.backButton}
           onPress={() => router.back()}
+          hitSlop={10}
         >
           <Ionicons
             name="chevron-back"
@@ -49,56 +45,58 @@ export default function SignupEmail() {
         </Text>
       </View>
 
-      {/* Character */}
-      <View style={styles.character} />
-
-      
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="이메일"
-          placeholderTextColor="#CFCFCF"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+      <View style={styles.content}>
+        <Image
+          source={require("../../assets/characters/emoji_intro_4.png")}
+          style={styles.character}
+          resizeMode="contain"
         />
+
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="이메일"
+            placeholderTextColor="#FFFFFF"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
       </View>
 
-    
-      {errorMessage !== "" && (
-        <View style={styles.errorContainer}>
+      <View style={styles.bottomArea}>
+        <View style={styles.guideContainer}>
           <Ionicons
             name="information-circle-outline"
-            size={16}
+            size={10}
             color="#FFFFFF"
           />
 
-          <Text style={styles.errorText}>
-            {errorMessage}
+          <Text style={styles.guideText}>
+            이메일 중복 확인 후 회원가입을 진행해주세요.
           </Text>
         </View>
-      )}
 
-     
-    <Pressable
-      style={[
-        styles.nextButton,
-        !isValid && styles.disabledButton,
-  ]}
-      disabled={!isValid}
-      onPress={handleNext}
->
-    <Text
-      style={[
-        styles.nextButtonText,
-        !isValid && styles.disabledButtonText,
-  ]}
->
-      다음
-</Text>
-
-    </Pressable>
+        <Pressable
+          style={[
+            styles.completeButton,
+            !isValid && styles.disabledButton,
+          ]}
+          disabled={!isValid}
+          onPress={handleComplete}
+        >
+          <Text
+            style={[
+              styles.completeButtonText,
+              !isValid &&
+                styles.disabledButtonText,
+            ]}
+          >
+            완료
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -106,7 +104,7 @@ export default function SignupEmail() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#10243A",
+    backgroundColor: "#071F30",
   },
 
   header: {
@@ -117,78 +115,85 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    left: 20,
-    bottom: 20,
+    left: 17,
+    bottom: 18,
   },
 
   headerTitle: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: "600",
   },
 
+  content: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   character: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    backgroundColor: "#D9D9D9",
-    alignSelf: "center",
-    marginTop: 40,
-    marginBottom: 60,
+    width: 110,
+    height: 110,
+    marginTop: 90,
+    marginBottom: 78,
   },
 
   form: {
-    paddingHorizontal: 25,
+    width: "100%",
+    paddingHorizontal: 20,
   },
 
   input: {
-    height: 55,
-    borderRadius: 30,
-    backgroundColor: "#7C8792",
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#667580",
+    borderWidth: 1.5,
+    borderColor: "#FFFFFF",
     paddingHorizontal: 20,
     color: "#FFFFFF",
-    marginBottom: 20, 
+    fontSize: 13,
+    fontWeight: "600",
+    marginBottom: 8,
   },
 
-  errorContainer: {
+  bottomArea: {
+    paddingHorizontal: 20,
+    paddingBottom: 35,
+  },
+
+  guideContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    position: "absolute",
-    bottom: 120,
-    left: 25,
-    right: 25,
+    marginBottom: 10,
   },
 
-  errorText: {
+  guideText: {
     color: "#FFFFFF",
-    fontSize: 11,
+    fontSize: 9,
     marginLeft: 5,
   },
 
-  nextButton: {
-    position: "absolute",
-    left: 25,
-    right: 25,
-    bottom: 50,
-    height: 58,
-    borderRadius: 30,
+  completeButton: {
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
   },
 
-  nextButtonText: {
+  completeButtonText: {
     color: "#10243A",
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: "600",
   },
 
   disabledButton: {
-  backgroundColor: "#D9D9D9",
-},
+    backgroundColor: "#D9D9D9",
+  },
 
   disabledButtonText: {
-  color: "#A5A5A5",
-},
+    color: "#A5A5A5",
+  },
 });

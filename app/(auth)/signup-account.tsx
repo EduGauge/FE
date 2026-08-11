@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -10,51 +11,30 @@ import {
 } from "react-native";
 
 export default function SignupAccount() {
-  const [id, setId] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
 
-  // 나중에 API 연결 시 사용할 에러 상태
-  const [idError, setIdError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
   const isValid =
-    id.trim() !== "" &&
+    nickname.trim() !== "" &&
     password.trim() !== "";
 
-  const handleNext = () => {
-  // TODO : 백엔드 회원가입 검증 API 연결
+  const handleComplete = () => {
+    if (!isValid) {
+      return;
+    }
 
-  /*
-  API 응답 예시
+    // TODO(API): 아이디 및 비밀번호 설정 API 연결
 
-  1. 아이디 중복
-  setIdError("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
-
-  2. 비밀번호 형식 오류
-  setPasswordError("영문, 숫자, 특수문자를 포함하여 8자 이상 입력해주세요.");
-
-  3. 둘 다 오류
-  setIdError("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
-  setPasswordError("영문, 숫자, 특수문자를 포함하여 8자 이상 입력해주세요.");
-
-  4. 둘 다 정상
-  setIdError("");
-  setPasswordError("");
-
-  router.push("/(auth)/signup-nickname");
-  */
-
-    router.push("/(auth)/signup-nickname");
+    router.replace("/(auth)/signup-nickname");
   };
 
   return (
     <View style={styles.container}>
-
-      {/* Header */}
       <View style={styles.header}>
         <Pressable
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => router.replace("/(auth)/signup-email")}
+          hitSlop={10}
         >
           <Ionicons
             name="chevron-back"
@@ -68,96 +48,74 @@ export default function SignupAccount() {
         </Text>
       </View>
 
-      {/* Character */}
-      <View style={styles.character} />
-
-      
-      <View style={styles.form}>
-
-        <TextInput
-          style={styles.input}
-          placeholder="아이디"
-          placeholderTextColor="#CFCFCF"
-          autoCapitalize="none"
-          value={id}
-          // TODO : API 연결 후 아래 setIdError("") 제거
-          // 에러는 handleNext()에서 서버 응답으로만 관리
-          onChangeText={(text) => {
-            setId(text);
-            setIdError("");
-          }}
+      <View style={styles.content}>
+        <Image
+          source={require("../../assets/characters/emoji_intro_5.png")}
+          style={styles.character}
+          resizeMode="contain"
         />
 
-        {idError !== "" && (
-          <View style={styles.errorContainer}>
-            <Ionicons
-              name="information-circle-outline"
-              size={16}
-              color="#FFFFFF"
-            />
-            <Text style={styles.errorText}>
-              {idError}
-            </Text>
-          </View>
-        )}
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="아이디"
+            placeholderTextColor="#FFFFFF"
+            value={nickname}
+            onChangeText={setNickname}
+            autoCapitalize="none"
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호"
-          placeholderTextColor="#CFCFCF"
-          secureTextEntry
-          value={password}
-          // TODO : API 연결 후 아래 setIdError("") 제거
-          // 에러는 handleNext()에서 서버 응답으로만 관리
-          onChangeText={(text) => {
-            setPassword(text);
-            setPasswordError("");
-          }}
-        />
-
-        {passwordError !== "" && (
-          <View style={styles.errorContainer}>
-            <Ionicons
-              name="information-circle-outline"
-              size={16}
-              color="#FFFFFF"
-            />
-            <Text style={styles.errorText}>
-              {passwordError}
-            </Text>
-          </View>
-        )}
-
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호"
+            placeholderTextColor="#FFFFFF"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
       </View>
 
-      
-      <Pressable
-        style={[
-          styles.nextButton,
-          !isValid && styles.disabledButton,
-        ]}
-        disabled={!isValid}
-        onPress={handleNext}
-      >
-        <Text
-          style={[
-            styles.nextButtonText,
-            !isValid && styles.disabledButtonText,
-          ]}
-        >
-          다음
-        </Text>
-      </Pressable>
+      <View style={styles.bottomArea}>
+        <View style={styles.guideContainer}>
+          <Ionicons
+            name="information-circle-outline"
+            size={10}
+            color="#FFFFFF"
+          />
 
+          <Text style={styles.guideText}>
+            아이디와 비밀번호를 입력해주세요.
+          </Text>
+        </View>
+
+        <Pressable
+          style={[
+            styles.completeButton,
+            !isValid && styles.disabledButton,
+          ]}
+          disabled={!isValid}
+          onPress={handleComplete}
+        >
+          <Text
+            style={[
+              styles.completeButtonText,
+              !isValid &&
+                styles.disabledButtonText,
+            ]}
+          >
+            다음
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: "#10243A",
+    backgroundColor: "#071F30",
   },
 
   header: {
@@ -168,72 +126,77 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    left: 20,
-    bottom: 20,
+    left: 17,
+    bottom: 18,
   },
 
   headerTitle: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "600",
   },
 
+  content: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   character: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    backgroundColor: "#D9D9D9",
-    alignSelf: "center",
-    marginTop: 40,
-    marginBottom: 60,
+    width: 110,
+    height: 110,
+    marginTop: 88,
+    marginBottom: 78,
   },
 
   form: {
-    paddingHorizontal: 25,
+    width: "100%",
+    paddingHorizontal: 20,
   },
 
   input: {
-    height: 55,
-    backgroundColor: "#7C8792",
-    borderRadius: 30,
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#667580",
+    borderWidth: 1.5,
+    borderColor: "#FFFFFF",
     paddingHorizontal: 20,
     color: "#FFFFFF",
-    marginBottom: 20,
+    fontSize: 13,
+    fontWeight: "600",
+    marginBottom: 8,
   },
 
-  errorContainer: {
+  bottomArea: {
+    paddingHorizontal: 20,
+    paddingBottom: 35,
+  },
+
+  guideContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: -12,
-    marginBottom: 20,
-    paddingHorizontal: 6,
+    justifyContent: "center",
+    marginBottom: 10,
   },
 
-  errorText: {
+  guideText: {
     color: "#FFFFFF",
-    fontSize: 11,
-    marginLeft: 5,
-    flex: 1,
+    fontSize: 9,
+    marginLeft: 4,
   },
 
-  nextButton: {
-    position: "absolute",
-    bottom: 50,
-    left: 25,
-    right: 25,
-
-    height: 58,
-    borderRadius: 30,
-
+  completeButton: {
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
     alignItems: "center",
   },
 
-  nextButtonText: {
+  completeButtonText: {
     color: "#10243A",
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: "600",
   },
 
@@ -244,5 +207,4 @@ const styles = StyleSheet.create({
   disabledButtonText: {
     color: "#A5A5A5",
   },
-
 });

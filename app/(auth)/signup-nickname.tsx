@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -11,14 +12,13 @@ import {
 
 export default function SignupNickname() {
   const [nickname, setNickname] = useState("");
-
-  // 나중에 API 연결 시 사용할 에러 상태
-  const [nicknameError, setNicknameError] = useState("");
+  const [nicknameError, setNicknameError] =
+    useState("");
 
   const isValid = nickname.trim() !== "";
 
   const handleComplete = () => {
-    // TODO(API) : 닉네임 중복 검사
+    // TODO(API): 닉네임 중복 검사
 
     /*
     API 응답 예시
@@ -30,20 +30,19 @@ export default function SignupNickname() {
 
     2. 정상
     setNicknameError("");
-    router.replace("/(tabs)/list");
+    router.replace("/welcome");
     */
 
-    router.replace("/(tabs)/list");
+    router.replace("/welcome");
   };
 
   return (
     <View style={styles.container}>
-
-      {/* Header */}
       <View style={styles.header}>
         <Pressable
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => router.replace("/(auth)/signup-account")}
+          hitSlop={10}
         >
           <Ionicons
             name="chevron-back"
@@ -57,69 +56,69 @@ export default function SignupNickname() {
         </Text>
       </View>
 
-      {/* Character */}
-      <View style={styles.character} />
-
-      {/* Input */}
-      <View style={styles.form}>
-
-        <TextInput
-          style={styles.input}
-          placeholder="닉네임"
-          placeholderTextColor="#CFCFCF"
-          value={nickname}
-          // TODO(API) : API 연결 후 아래 setNicknameError("") 제거
-          // 에러는 handleComplete()에서 서버 응답으로만 관리
-          onChangeText={(text) => {
-            setNickname(text);
-            setNicknameError("");
-          }}
+      <View style={styles.content}>
+        <Image
+          source={require("../../assets/characters/emoji_intro_6.png")}
+          style={styles.character}
+          resizeMode="contain"
         />
 
-        {nicknameError !== "" && (
-          <View style={styles.errorContainer}>
-            <Ionicons
-              name="information-circle-outline"
-              size={16}
-              color="#FFFFFF"
-            />
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="닉네임"
+            placeholderTextColor="#FFFFFF"
+            value={nickname}
+            onChangeText={(text) => {
+              setNickname(text);
+              setNicknameError("");
+            }}
+          />
 
-            <Text style={styles.errorText}>
-              {nicknameError}
-            </Text>
-          </View>
-        )}
+          {nicknameError !== "" && (
+            <View style={styles.errorContainer}>
+              <Ionicons
+                name="information-circle-outline"
+                size={10}
+                color="#FFFFFF"
+              />
 
+              <Text style={styles.errorText}>
+                {nicknameError}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
 
-      {/* Complete Button */}
-      <Pressable
-        style={[
-          styles.completeButton,
-          !isValid && styles.disabledButton,
-        ]}
-        disabled={!isValid}
-        onPress={handleComplete}
-      >
-        <Text
+      <View style={styles.bottomArea}>
+        <Pressable
           style={[
-            styles.completeButtonText,
-            !isValid && styles.disabledButtonText,
+            styles.completeButton,
+            !isValid && styles.disabledButton,
           ]}
+          disabled={!isValid}
+          onPress={handleComplete}
         >
-          완료
-        </Text>
-      </Pressable>
-
+          <Text
+            style={[
+              styles.completeButtonText,
+              !isValid &&
+                styles.disabledButtonText,
+            ]}
+          >
+            완료
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: "#10243A",
+    backgroundColor: "#071F30",
   },
 
   header: {
@@ -130,71 +129,77 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    left: 20,
-    bottom: 20,
+    left: 17,
+    bottom: 18,
   },
 
   headerTitle: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "600",
   },
 
+  content: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   character: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
-    backgroundColor: "#D9D9D9",
-    alignSelf: "center",
-    marginTop: 40,
-    marginBottom: 60,
+    width: 110,
+    height: 110,
+    marginTop: 90,
+    marginBottom: 78,
   },
 
   form: {
-    paddingHorizontal: 25,
+    width: "100%",
+    paddingHorizontal: 20,
   },
 
   input: {
-    height: 55,
-    backgroundColor: "#7C8792",
-    borderRadius: 30,
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#667580",
+    borderWidth: 1.5,
+    borderColor: "#FFFFFF",
     paddingHorizontal: 20,
     color: "#FFFFFF",
-    marginBottom: 8,
+    fontSize: 13,
+    fontWeight: "600",
   },
 
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: 6,
+    paddingHorizontal: 5,
+    marginTop: 6,
   },
 
   errorText: {
     color: "#FFFFFF",
-    fontSize: 11,
-    marginLeft: 5,
+    fontSize: 7,
+    marginLeft: 4,
     flex: 1,
   },
 
+  bottomArea: {
+    paddingHorizontal: 20,
+    paddingBottom: 35,
+  },
+
   completeButton: {
-    position: "absolute",
-    bottom: 50,
-    left: 25,
-    right: 25,
-
-    height: 58,
-    borderRadius: 30,
-
+    width: "100%",
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
     alignItems: "center",
   },
 
   completeButtonText: {
     color: "#10243A",
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: "600",
   },
 
@@ -205,5 +210,4 @@ const styles = StyleSheet.create({
   disabledButtonText: {
     color: "#A5A5A5",
   },
-
 });
