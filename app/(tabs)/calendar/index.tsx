@@ -37,6 +37,13 @@ const character0 = require(
   "../../../assets/characters/calendar_record_4.png"
 );
 
+const studyPhoto1 = require(
+  "../../../assets/images/study-photo-1.png"
+);
+
+const studyPhoto2 = require(
+  "../../../assets/images/study-photo-2.png"
+);
 
 
 const getCharacter = (
@@ -70,9 +77,7 @@ const RECORDS: Record<
     elapsedSeconds: 3,
     completed: true,
     photo: true,
-
-    // 실제 인증샷 URI가 연결되면 여기에 들어오도록 사용
-    // photoUri: "...",
+    photoUri: studyPhoto1,
 
     todos: [
       {
@@ -105,9 +110,7 @@ const RECORDS: Record<
     elapsedSeconds: 90,
     completed: true,
     photo: true,
-
-    // 실제 인증샷 URI가 연결되면 여기에 들어오도록 사용
-    // photoUri: "...",
+    photoUri: studyPhoto2,
 
     todos: [
       {
@@ -341,9 +344,10 @@ export default function CalendarScreen() {
               isFutureDate(day);
 
             const completed =
-              !!record &&
-              record.progress >= 100 &&
+               !!record &&
+               record.progress >= 100 &&
               record.photo === true;
+         
 
             return (
               <View
@@ -379,9 +383,7 @@ export default function CalendarScreen() {
                   {completed &&
                     record.photoUri && (
                       <Image
-                        source={{
-                          uri: record.photoUri,
-                        }}
+                        source={record.photoUri}
                         style={
                           styles.dayPhoto
                         }
