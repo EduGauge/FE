@@ -1,3 +1,5 @@
+import { ImageSourcePropType } from "react-native";
+
 export interface CalendarTodo {
   id: string;
   title: string;
@@ -11,7 +13,7 @@ export interface CalendarRecord {
   elapsedSeconds: number;
   completed: boolean;
   photo: boolean;
-  photoUri?: string;
+  photoUri?: ImageSourcePropType;
   todos: CalendarTodo[];
 }
 
