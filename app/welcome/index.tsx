@@ -32,7 +32,6 @@ export default function WelcomeScreen() {
         resizeMode="contain"
       />
 
-      // TODO: 닉네임 이름 값 반영
       <Text style={styles.title}>
         홍익와우 님, 
       </Text>
