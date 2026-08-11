@@ -179,8 +179,6 @@ export default function TabLayout() {
             />
           ),
           
-          // 친구 화면의 헤더는
-          // friend/_layout.tsx에서 관리
           headerShown: false,
         }}
       />

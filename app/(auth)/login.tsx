@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 
+
 export default function Login() {
   return (
     <View style={styles.container}>
@@ -65,12 +66,12 @@ export default function Login() {
           </View>
         </Pressable>
 
-        <Pressable
+       <Pressable
           style={styles.button}
-          onPress={() =>
+          onPress={() => 
             console.log("Google Login")
-          }
-        >
+            }
+    >
           <View style={styles.buttonContent}>
             <Image
               source={require("../../assets/logos/logo_google.png")}
@@ -134,19 +135,19 @@ const styles = StyleSheet.create({
 
   header: {
     height: 90,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
 
   backButton: {
     position: "absolute",
-    left: 17,
-    bottom: 18,
+    left: 18,
   },
 
   headerTitle: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "600",
   },
 

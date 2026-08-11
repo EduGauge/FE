@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   Image,
@@ -13,22 +12,14 @@ import {
 import CalendarRecordModal, {
   CalendarRecord,
 } from "../../../components/CalendarRecordModal";
+import Header from "../../../components/Header";
 
-// =====================================================
+
 // 테스트용 날짜
-// =====================================================
-
 const YEAR = 2026;
 const MONTH = 7;
 
-// =====================================================
-// 달력 캐릭터
-//
-// 100%      → calendar_record_1
-// 70% 이상  → calendar_record_2
-// 30% 이상  → calendar_record_3
-// 0% 이상   → calendar_record_4
-// =====================================================
+
 
 const character100 = require(
   "../../../assets/characters/calendar_record_1.png"
@@ -46,9 +37,7 @@ const character0 = require(
   "../../../assets/characters/calendar_record_4.png"
 );
 
-// =====================================================
-// 캐릭터 선택
-// =====================================================
+
 
 const getCharacter = (
   progress: number
@@ -68,9 +57,8 @@ const getCharacter = (
   return character0;
 };
 
-// =====================================================
+
 // 테스트 기록
-// =====================================================
 
 const RECORDS: Record<
   string,
@@ -172,9 +160,7 @@ const RECORDS: Record<
   },
 };
 
-// =====================================================
-// Calendar
-// =====================================================
+
 
 export default function CalendarScreen() {
   const [
@@ -184,9 +170,6 @@ export default function CalendarScreen() {
     null
   );
 
-  // =====================================================
-  // 해당 월 날짜 생성
-  // =====================================================
 
   const calendarDays = useMemo(() => {
     const firstDay = new Date(
@@ -230,9 +213,7 @@ export default function CalendarScreen() {
     return days;
   }, []);
 
-  // =====================================================
-  // 날짜 Key
-  // =====================================================
+  
 
   const getDateKey = (
     day: number
@@ -244,9 +225,7 @@ export default function CalendarScreen() {
     ).padStart(2, "0")}`;
   };
 
-  // =====================================================
-  // 날짜 클릭
-  // =====================================================
+  
 
   const handleDayPress = (
     day: number
@@ -261,13 +240,6 @@ export default function CalendarScreen() {
     setSelectedRecord(record);
   };
 
-  // =====================================================
-  // 미래 날짜 여부
-  //
-  // 실제 서비스에서는 현재 날짜 기준으로 판단.
-  // 테스트 화면에서 7/3 이후를 미래로 보고 싶으면
-  // TEST_TODAY_DAY = 3으로 설정.
-  // =====================================================
 
   const TEST_TODAY_DAY = 3;
 
@@ -280,67 +252,7 @@ export default function CalendarScreen() {
   return (
     <View style={styles.container}>
 
-      {/* =================================================
-          Header
-         ================================================= */}
-
-      <View style={styles.header}>
-
-        <Pressable
-          style={styles.backButton}
-          onPress={() =>
-            router.back()
-          }
-          hitSlop={10}
-        >
-          <Ionicons
-            name="chevron-back"
-            size={28}
-            color="#FFFFFF"
-          />
-        </Pressable>
-
-        <Text style={styles.headerTitle}>
-          달력
-        </Text>
-
-        <View
-          style={styles.headerRight}
-        >
-          <Pressable
-            hitSlop={10}
-            onPress={() =>
-              router.push("/profile")
-            }
-          >
-            <Ionicons
-              name="person-circle"
-              size={28}
-              color="#FFFFFF"
-            />
-          </Pressable>
-
-          <Pressable
-            style={styles.menuButton}
-            hitSlop={10}
-            onPress={() =>
-              router.push(
-                "/notification"
-              )
-            }
-          >
-            <Ionicons
-              name="ellipsis-vertical"
-              size={24}
-              color="#FFFFFF"
-            />
-          </Pressable>
-        </View>
-      </View>
-
-      {/* =================================================
-          월
-         ================================================= */}
+      <Header title="" variant="logo" />
 
       <View
         style={styles.monthHeader}
@@ -378,9 +290,7 @@ export default function CalendarScreen() {
 
       </View>
 
-      {/* =================================================
-          요일
-         ================================================= */}
+      
 
       <View style={styles.weekRow}>
         {[
@@ -401,9 +311,7 @@ export default function CalendarScreen() {
         ))}
       </View>
 
-      {/* =================================================
-          달력
-         ================================================= */}
+     
 
       <View
         style={styles.calendarGrid}
@@ -443,18 +351,7 @@ export default function CalendarScreen() {
                 style={styles.dayCell}
               >
 
-                {/* =================================================
-                    날짜 원
-
-                    1. 미래
-                       → 빈 원 + 날짜
-
-                    2. 일반 기록
-                       → 원 안에 캐릭터 + 날짜
-
-                    3. 100% 인증샷
-                       → 원 안에 인증샷 + 캐릭터 + 날짜
-                   ================================================= */}
+                
 
                 <Pressable
                   style={[
@@ -477,12 +374,7 @@ export default function CalendarScreen() {
                   }
                 >
 
-                  {/* =================================================
-                      인증샷 배경
-
-                      100% + photoUri가 있을 때만
-                      실제 인증샷을 원형으로 표시
-                     ================================================= */}
+                  
 
                   {completed &&
                     record.photoUri && (
@@ -497,12 +389,7 @@ export default function CalendarScreen() {
                       />
                     )}
 
-                  {/* =================================================
-                      캐릭터
-
-                      기록이 있고 미래 날짜가 아닐 때 표시
-                     ================================================= */}
-
+                 
                   {hasRecord &&
                     !future && (
                       <Image
@@ -516,12 +403,7 @@ export default function CalendarScreen() {
                       />
                     )}
 
-                  {/* =================================================
-                      날짜
-
-                      캐릭터 아래쪽에 작게 표시
-                     ================================================= */}
-
+                 
                   <View
                     style={[
                       styles.dayNumberContainer,
@@ -549,9 +431,7 @@ export default function CalendarScreen() {
         )}
       </View>
 
-      {/* =================================================
-          Gauge 안내 카드
-         ================================================= */}
+      
 
       <View
         style={styles.gaugeCard}
@@ -560,33 +440,30 @@ export default function CalendarScreen() {
         <GaugeRow
           character={character100}
           label="EDUGAUGE 100%"
-          progress={100}
+          progress={10}
         />
 
         <GaugeRow
           character={character70}
           label="EDUGAUGE 70 - 99%"
-          progress={75}
+          progress={25}
         />
 
         <GaugeRow
           character={character30}
           label="EDUGAUGE 30 - 69%"
-          progress={50}
+          progress={60}
         />
 
         <GaugeRow
           character={character0}
           label="EDUGAUGE 0 - 29%"
-          progress={22}
+          progress={5}
         />
 
       </View>
 
-      {/* =================================================
-          기록 모달
-         ================================================= */}
-
+      
       <CalendarRecordModal
         visible={
           selectedRecord !== null
@@ -601,9 +478,7 @@ export default function CalendarScreen() {
   );
 }
 
-// =====================================================
-// Gauge Row
-// =====================================================
+
 
 function GaugeRow({
   character,
@@ -663,44 +538,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#071F30",
   },
 
-  /* =====================================================
-     Header
-     ===================================================== */
-
-  header: {
-    height: 82,
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  backButton: {
-    position: "absolute",
-    left: 18,
-  },
-
-  headerTitle: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "600",
-  },
-
-  headerRight: {
-    position: "absolute",
-    right: 16,
-
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  menuButton: {
-    marginLeft: 12,
-  },
-
-  /* =====================================================
-     월
-     ===================================================== */
 
   monthHeader: {
     height: 70,
@@ -727,10 +564,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
-  /* =====================================================
-     요일
-     ===================================================== */
-
+  
   weekRow: {
     flexDirection: "row",
     paddingHorizontal: 18,
@@ -746,9 +580,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  /* =====================================================
-     Calendar
-     ===================================================== */
 
   calendarGrid: {
     flexDirection: "row",
@@ -768,9 +599,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  /* =====================================================
-     날짜 동그라미
-     ===================================================== */
 
   dayCircle: {
     position: "relative",
@@ -791,56 +619,34 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  /* 기록이 있는 날 */
-
   recordDayCircle: {
     backgroundColor: "#465A68",
 
     borderColor: "#71808B",
   },
 
-  /* =====================================================
-     100% 달성 + 인증샷 날짜
-     ===================================================== */
-
   completedDayCircle: {
     borderColor: "#FFFFFF",
     backgroundColor: "#465A68",
   },
 
-  /* 인증샷 */
 
   dayPhoto: {
     position: "absolute",
-
     top: 0,
     left: 0,
-
     width: "100%",
     height: "100%",
   },
 
-  /* =====================================================
-     달력 캐릭터
-     ===================================================== */
-
+ 
   dayCharacter: {
     position: "absolute",
-
     width: 31,
     height: 31,
-
     top: 4,
-
     zIndex: 2,
   },
-
-  /* =====================================================
-     날짜 숫자 영역
-
-     캐릭터가 숫자를 완전히 가리지 않도록
-     아래쪽에 배치
-     ===================================================== */
 
   dayNumberContainer: {
     position: "absolute",
@@ -862,8 +668,6 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
 
-  /* 인증샷 위 날짜 */
-
   completedDayNumberContainer: {
     backgroundColor: "rgba(7, 31, 48, 0.72)",
   },
@@ -880,10 +684,6 @@ const styles = StyleSheet.create({
   completedDayText: {
     color: "#FFFFFF",
   },
-
-  /* =====================================================
-     미래 날짜
-     ===================================================== */
 
   futureDayCircle: {
     backgroundColor: "transparent",
@@ -920,7 +720,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 28,
 
-    marginRight: 2,
+    marginRight: 10,
   },
 
   gaugeLabel: {
